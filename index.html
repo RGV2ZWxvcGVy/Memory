@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Javascript Memory</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Javascript Memory</h1>
+
+            <div class="stats">
+                <div class="stats-inner">
+                    <p>Verlopen tijd: {64} seconden.</p>
+                    <p>Gevonden kaart-paren: {1}.</p>
+        
+                    <label for="time">Resterende tijd:</label>
+                    <progress name="time" id="time" value="70" max="100">{70%}</progress>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="main-content">
+            <div class="playing-field">
+                <div class="inner-field">
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+    
+                    <div class="card"></div>
+                    <div class="card open"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+    
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+    
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+    
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card found"></div>
+                    <div class="card"></div>
+    
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <aside>
+        <div class="aside-content">
+            <div class="top-five">
+                <h3>Top vijf</h3>
+                <ol>
+                    <li>{Barack Obama}: {200}</li>
+                    <li>{Bernie Sanders}: {300}</li>
+                    <li>{Hillary Clinton}: {400}</li>
+                    <li>{Donald Trump}: {500}</li>
+                    <li>{Jeb Bush}: {600}</li>
+                </ol>
+            </div>
+
+            <div class="average-playtime">
+                <div>
+                    <strong>Gemiddelde speeltijd</strong>
+                </div>
+                <div>{0 s (64 s)}</div>
+            </div>
+
+            <form action="/" method="POST">
+                <div class="characters">
+                    <label for="character">
+                        <strong>Karakter op kaarten</strong>
+                    </label><br />
+                    <select name="character" id="character">
+                        <option>@</option>
+                        <option>#</option>
+                        <option>%</option>
+                        <option>&</option>
+                        <option selected>*</option>
+                        <option>X</option>
+                    </select>
+                </div>
+    
+                <div class="playing-field-size">
+                    <label for="size">
+                        <strong>Afmeting bord</strong>
+                    </label><br />
+                    <select name="size" id="size">
+                        <option>2</option>
+                        <option>4</option>
+                        <option selected>6</option>
+                    </select>
+                </div>
+
+                <div class="color-settings">
+                    <div class="color-input">
+                        <button type="button">
+                            <label for="cardColor">Kaartkleur</label>
+                        </button>
+                        <input type="color" name="cardColor" id="cardColor" />
+                    </div>
+    
+                    <div class="color-input">
+                        <button type="button">
+                            <label for="openCardColor">Open</label>
+                        </button>
+                        <input type="color" name="openCardColor" id="openCardColor" />
+                    </div>
+    
+                    <div class="color-input">
+                        <button type="button">
+                            <label for="foundCardColor">Gevonden</label>
+                        </button>
+                        <input type="color" name="foundCardColor" id="foundCardColor" />
+                    </div>
+                </div>
+    
+                <div class="new-game">
+                    <input type="submit" value="Nieuw spel" />
+                </div>
+            </form>
+        </div>
+    </aside>
+</body>
+</html>

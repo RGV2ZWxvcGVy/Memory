@@ -1,0 +1,228 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 1rem 0 1rem 0;
+}
+
+p {
+    margin: .25rem 0;
+}
+
+h1 {
+    font-size: 1.75rem;
+    margin: 0 0 .75rem 0;
+}
+
+
+header {
+    width: 65%;
+    margin-bottom: 1rem;
+}
+
+.header-content {
+    text-align: center;
+}
+
+.stats-inner {
+    width: fit-content;
+    background-color: #EDEDED;
+    padding: 1rem 7.5rem;
+    margin: auto;
+}
+
+.stats label {
+    display: inline-block;
+    padding: .25rem 0;
+}
+
+.stats progress#time {
+    width: 235px;
+    display: block;
+    margin: auto;
+}
+
+
+main {
+    width: 65%;
+    display: inline-block;
+}
+
+.main-content {
+    text-align: center;
+}
+
+.playing-field {
+    width: 715px;
+    margin: auto;
+}
+
+.card {
+    width: 115px;
+    height: 115px;
+    background-color: #357EC7;
+    display: inline-block;
+}
+
+
+aside {
+    width: 34.5%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.aside-content {
+    background-color: #EDEDED;
+    display: inline-block;
+    padding: 1rem 8rem;
+}
+
+.average-playtime {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.playing-field-size {
+    margin-top: .75rem;
+    margin-bottom: 8rem;
+}
+
+.aside-content select {
+    width: 30%;
+}
+
+.color-settings .color-input button {
+    width: 40%;
+}
+
+.color-settings .color-input input {
+    width: 55%;
+    height: 32px;
+    border: unset;
+    vertical-align: middle;
+}
+
+.new-game {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* TODO: Make this dynamic... */
+.card.open {
+    background-color: red;
+}
+
+.card.found {
+    background-color: green;
+}
+
+@media only screen and (max-width: 1400px) {
+    .aside-content {
+        padding: 1rem 6rem;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .stats progress#time {
+        width: 200px;
+    }
+
+    .playing-field {
+        width: 625px;
+    }
+
+    .card {
+        width: 100px;
+        height: 100px;
+    }
+
+    .aside-content {
+        padding: 1rem 4rem;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    header {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .stats-inner {
+        padding: 1rem 13rem;
+        margin: auto;
+    }
+
+    main {
+        width: 100%;
+    }
+    
+    aside {
+        width: 100%;
+        display: block;
+        margin: 1rem auto;
+    }
+
+    .aside-content {
+        width: fit-content;
+        display: block;
+        padding: 1rem 13rem;
+        margin: auto;
+    }
+}
+
+@media only screen and (max-width: 678px) {
+    .stats-inner {
+        width: 100%;
+        padding: 1rem 0;
+    }
+
+    .stats progress#time {
+        width: 160px;
+    }
+
+    .playing-field {
+        width: 575px;
+    }
+
+    .card {
+        width: 80px;
+        height: 80px;
+    }
+
+    aside {
+        background-color: #EDEDED;
+    }
+
+    .aside-content {
+        padding: 1rem 0;
+        margin: auto;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .stats progress#time {
+        width: 120px;
+    }
+
+    .playing-field {
+        width: 400px;
+    }
+
+    .card {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .stats progress#time {
+        width: 120px;
+    }
+
+    .playing-field {
+        width: 375px;
+    }
+
+    .card {
+        width: 50px;
+        height: 50px;
+    }
+}
