@@ -52,14 +52,31 @@ main {
 
 .playing-field {
     width: 715px;
+    user-select: none;
     margin: auto;
 }
 
 .card {
     width: 115px;
     height: 115px;
+    font-size: 1.75rem;
+    color: #FFFFFF;
     background-color: #357EC7;
     display: inline-block;
+    margin: .15rem 0;
+}
+
+.card.closed:hover {
+    cursor: pointer;
+    opacity: .7;
+    transition: .3s;
+}
+
+.card div {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -107,11 +124,11 @@ aside {
 
 /* TODO: Make this dynamic... */
 .card.open {
-    background-color: red;
+    background-color: #FF0000;
 }
 
 .card.found {
-    background-color: green;
+    background-color: #009900;
 }
 
 @media only screen and (max-width: 1400px) {
