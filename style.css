@@ -1,5 +1,6 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
+    background-color: #FFFF96;
     margin: 1rem 0 1rem 0;
 }
 
@@ -14,7 +15,8 @@ h1 {
 
 
 header {
-    width: 65%;
+    width: 100%;
+    background-color: #333333;
     margin-bottom: 1rem;
 }
 
@@ -23,10 +25,10 @@ header {
 }
 
 .stats-inner {
-    width: fit-content;
-    background-color: #EDEDED;
-    padding: 1rem 7.5rem;
-    margin: auto;
+    width: 100%;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding: 1rem 0;
 }
 
 .stats label {
@@ -35,7 +37,7 @@ header {
 }
 
 .stats progress#time {
-    width: 235px;
+    width: 205px;
     display: block;
     margin: auto;
 }
@@ -57,18 +59,27 @@ main {
 }
 
 .card {
-    width: 115px;
-    height: 115px;
+    width: 100px;
+    height: 100px;
+    display: inline-block;
     font-size: 1.75rem;
     color: #FFFFFF;
-    background-color: #357EC7;
-    display: inline-block;
+    background-color: #333333;
+    border: 2px solid #333333;
     margin: .15rem 0;
+}
+
+.card.open {
+    background-color: #357EC7;
+}
+
+.card.found {
+    background-color: #197300;
 }
 
 .card.closed:hover {
     cursor: pointer;
-    opacity: .7;
+    opacity: .9;
     transition: .3s;
 }
 
@@ -87,19 +98,20 @@ aside {
 }
 
 .aside-content {
-    background-color: #EDEDED;
     display: inline-block;
-    padding: 1rem 8rem;
+    background-color: #FFFFFF;
+    border: 2px solid #333;
+    padding: 1rem 6rem;
 }
 
 .average-playtime {
-    margin-top: 2rem;
+    margin-top: 1.25rem;
     margin-bottom: 1rem;
 }
 
 .playing-field-size {
     margin-top: .75rem;
-    margin-bottom: 8rem;
+    margin-bottom: 1.5rem;
 }
 
 .aside-content select {
@@ -118,28 +130,13 @@ aside {
 }
 
 .new-game {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
 }
 
-/* TODO: Make this dynamic... */
-.card.open {
-    background-color: #FF0000;
-}
-
-.card.found {
-    background-color: #009900;
-}
-
-@media only screen and (max-width: 1400px) {
-    .aside-content {
-        padding: 1rem 6rem;
-    }
-}
 
 @media only screen and (max-width: 1200px) {
     .stats progress#time {
-        width: 200px;
+        width: 195px;
     }
 
     .playing-field {
@@ -147,8 +144,8 @@ aside {
     }
 
     .card {
-        width: 100px;
-        height: 100px;
+        width: 95px;
+        height: 95px;
     }
 
     .aside-content {
@@ -157,16 +154,6 @@ aside {
 }
 
 @media only screen and (max-width: 1000px) {
-    header {
-        width: 100%;
-        margin-bottom: 1rem;
-    }
-
-    .stats-inner {
-        padding: 1rem 13rem;
-        margin: auto;
-    }
-
     main {
         width: 100%;
     }
@@ -180,19 +167,14 @@ aside {
     .aside-content {
         width: fit-content;
         display: block;
-        padding: 1rem 13rem;
+        padding: 1rem 13.25rem;
         margin: auto;
     }
 }
 
 @media only screen and (max-width: 678px) {
-    .stats-inner {
-        width: 100%;
-        padding: 1rem 0;
-    }
-
     .stats progress#time {
-        width: 160px;
+        width: 165px;
     }
 
     .playing-field {
@@ -205,18 +187,19 @@ aside {
     }
 
     aside {
-        background-color: #EDEDED;
+        background-color: #FFFFFF;
     }
 
     .aside-content {
         padding: 1rem 0;
+        border: unset;
         margin: auto;
     }
 }
 
 @media only screen and (max-width: 600px) {
     .stats progress#time {
-        width: 120px;
+        width: 121px;
     }
 
     .playing-field {
@@ -224,14 +207,14 @@ aside {
     }
 
     .card {
-        width: 60px;
-        height: 60px;
+        width: 58px;
+        height: 58px;
     }
 }
 
 @media only screen and (max-width: 480px) {
     .stats progress#time {
-        width: 120px;
+        width: 105px;
     }
 
     .playing-field {
