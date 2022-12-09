@@ -1,6 +1,31 @@
-document.addEventListener("DOMContentLoaded", function(event) {
-    let cards = new Cards().generateCards();
+document.addEventListener("DOMContentLoaded", function() {
+    let allCards = new Cards();
+    allCards.generateCards();
+    allCards = allCards.cards;
+    prepareCards(allCards);
 });
+
+
+function prepareCards(cards) {
+    for (let i = 0; i < cards.length; i++) {
+        let card = document.getElementById("card" + (i + 1));
+        card.addEventListener("click", function() {
+            cards[i].open();
+        });
+    }
+}
+
+function addClass(element, className) {
+    if (!element.classList.contains(className)) {
+        element.classList.add(className);
+    }
+}
+
+function removeClass(element, className) {
+    if (element.classList.contains(className)) {
+        element.classList.remove(className);
+    }
+}
 
 
 class Cards
@@ -13,12 +38,16 @@ class Cards
         let letters = this.shuffleLetters();
 
         for (let i = 0; i < GameSettings.totalCards; i++) {
+            let id = "card" + (i + 1);
             let letter = letters.charAt(i);
-            this.cards.push(new Card(letter));
-            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" data-value=\"" + letter + "\" onclick=\"this.open();\"><div>+</div></div>";
+            let card = new Card(id, letter);
+            this.cards.push(card);
+
+            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\" data-value=\"" + letter + "\"><div>+</div></div>";
         }
     }
 
+    // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript#:~:text=I%20think%20this%20will%20work%20for%20you%3A
     shuffleLetters() {
         let result = "";
         // Concat the letters with eachother to get the matching letters
@@ -34,6 +63,7 @@ class Cards
         return result;
     }
 
+    // https://stackoverflow.com/questions/2722159/how-to-filter-object-array-based-on-attributes#:~:text=You%20can%20use%20the%20Array.prototype.filter%20method%3A
     getFoundCards() {
         return this.cards.filter(function(card) {
             return card.state.found === true;
@@ -43,17 +73,21 @@ class Cards
 
 class Card
 {
-    constructor(value) {
+    constructor(id, value) {
+        this.id = id
         this.value = value;
         this.state = new State();
     }
 
     open() {
+        let cardDOM = this.getCardAsDOM(this.id);
+
         this.state.open = true;
+        addClass(cardDOM, "open");
+        cardDOM.innerHTML = cardDOM.innerHTML.replace(GameSettings.character, this.value);
+
         this.state.closed = false;
-
-        // Check if one card is already open, if so check if the letter is the same
-
+        removeClass(cardDOM, "closed");
     }
 
     close() {
@@ -66,10 +100,33 @@ class Card
         this.state.open = true;
         this.state.closed = false;
     }
+
+    checkMatch() {
+        // Check if one card is already open, if so check if the value is the same
+        if (State.clickedCardValue.length) {
+            if (this.value === State.clickedCardValue) {
+                // The card matched with the previous card
+
+            }
+            else {
+                // The card did not match with the previous card
+
+            }
+        }
+        else {
+            this.open();
+        }
+    }
+
+    getCardAsDOM(id) {
+        return document.getElementById(id);
+    }
 }
 
 class State
 {
+    static clickedCardValue = "";
+
     constructor() {
         this.open = false;
         this.closed = true;
