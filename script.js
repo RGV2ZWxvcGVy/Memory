@@ -10,7 +10,7 @@ function prepareCards(cards) {
     for (let i = 0; i < cards.length; i++) {
         let card = document.getElementById("card" + (i + 1));
         card.addEventListener("click", function() {
-            cards[i].open();
+            cards[i].handleClick();
         });
     }
 }
@@ -43,7 +43,9 @@ class Cards
             let card = new Card(id, letter);
             this.cards.push(card);
 
-            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\" data-value=\"" + letter + "\"><div>+</div></div>";
+            // Uncomment for debugging purposes
+            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + letter + "</div></div>";
+            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>+</div></div>";
         }
     }
 
@@ -83,38 +85,70 @@ class Card
         let cardDOM = this.getCardAsDOM(this.id);
 
         this.state.open = true;
-        addClass(cardDOM, "open");
         cardDOM.innerHTML = cardDOM.innerHTML.replace(GameSettings.character, this.value);
+        addClass(cardDOM, "open");
 
         this.state.closed = false;
         removeClass(cardDOM, "closed");
     }
 
     close() {
+        let cardDOM = this.getCardAsDOM(this.id);
+
         this.state.closed = true;
+        cardDOM.innerHTML = cardDOM.innerHTML.replace(this.value, GameSettings.character);
+        addClass(cardDOM, "closed");
+
         this.state.open = false;
+        removeClass(cardDOM, "open");
     }
 
     found() {
+        let cardDOM = this.getCardAsDOM(this.id);
+
         this.state.found = true;
-        this.state.open = true;
+        addClass(cardDOM, "found");
+
+        this.state.open = false;
+        removeClass(cardDOM, "open");
+
         this.state.closed = false;
     }
 
-    checkMatch() {
-        // Check if one card is already open, if so check if the value is the same
-        if (State.clickedCardValue.length) {
-            if (this.value === State.clickedCardValue) {
-                // The card matched with the previous card
+    handleClick() {
+        // If the card has already been found, exit the function
+        if (this.state.found) {
+            return;
+        }
 
+        // Check if one card is already open, if so check if the value is the same
+        if (GameState.clickedCard !== null) {
+            // If the card matched with the previous card
+            if (this.value === GameState.clickedCard.value) {
+                this.open();
+                this.found();
+
+                GameState.clickedCard.found();
+                GameState.clickedCard = null;
             }
             else {
-                // The card did not match with the previous card
+                // Open the card so the user can see the value
+                this.open();
 
+                let card = this;
+                // The card did not match with the previous card
+                setTimeout(function() {
+                    card.close();
+                    GameState.clickedCard.close();
+
+                    // Empty the clicked state
+                    GameState.clickedCard = null;
+                }, 1000);
             }
         }
         else {
             this.open();
+            GameState.clickedCard = this;
         }
     }
 
@@ -125,13 +159,16 @@ class Card
 
 class State
 {
-    static clickedCardValue = "";
-
     constructor() {
         this.open = false;
         this.closed = true;
         this.found = false;
     }
+}
+
+class GameState
+{
+    static clickedCard = null;
 }
 
 class GameSettings
