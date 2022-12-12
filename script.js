@@ -116,13 +116,17 @@ class Card
     }
 
     handleClick() {
-        // If the card has already been found, exit the function
-        if (this.state.found) {
+        // If there are two cards visible, or the same card has been clicked, or the card has already been found, exit the function
+        if (GameState.clickInProgress ||
+            GameState.clickedCard?.id === this.id ||
+            this.state.found) {
             return;
         }
 
         // Check if one card is already open, if so check if the value is the same
         if (GameState.clickedCard !== null) {
+            GameState.clickInProgress = true;
+
             // If the card matched with the previous card
             if (this.value === GameState.clickedCard.value) {
                 this.open();
@@ -130,6 +134,7 @@ class Card
 
                 GameState.clickedCard.found();
                 GameState.clickedCard = null;
+                GameState.clickInProgress = false;
             }
             else {
                 // Open the card so the user can see the value
@@ -143,6 +148,7 @@ class Card
 
                     // Empty the clicked state
                     GameState.clickedCard = null;
+                    GameState.clickInProgress = false;
                 }, 1000);
             }
         }
@@ -169,6 +175,7 @@ class State
 class GameState
 {
     static clickedCard = null;
+    static clickInProgress = false;
 }
 
 class GameSettings
