@@ -70,7 +70,7 @@ main {
 }
 
 .card.open {
-    background-color: #357EC7;
+    background-color: #0075FF;
 }
 
 .card.found {
@@ -79,7 +79,8 @@ main {
 
 .card.closed:hover {
     cursor: pointer;
-    opacity: .9;
+    color: #333333;
+    background-color: #FFFFFF;
     transition: .3s;
 }
 
