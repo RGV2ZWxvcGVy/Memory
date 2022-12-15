@@ -49,8 +49,8 @@ class Cards
             this.cards.push(card);
 
             // Uncomment for debugging purposes
-            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + letter + "</div></div>";
-            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>+</div></div>";
+            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + letter + "</div></div>";
+            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>+</div></div>";
         }
     }
 
@@ -117,47 +117,51 @@ class Card
 
     // Handles the logic when a card has been clicked
     handleClick() {
-        // If two cards flipped, or the same card has been clicked, or the card has already been found, do not continue
+        // If the same card has been clicked, or the card has already been found, do not continue
         if (GameState.clickInProgress ||
-            GameState.clickedCard?.id === this.id ||
+            GameState.firstFlippedCard?.id === this.id ||
+            GameState.lastFlippedCard?.id === this.id ||
             this.state.found) {
             return;
         }
 
-        // Check if one card is already open, if so check if the value is the same
-        if (GameState.clickedCard !== null) {
+        // If two cards are flipped, close them, reset some state values, and execute handleClick again
+        if (GameState.maxCardsFlipped) {
+            GameState.firstFlippedCard.switchCardState(CardState.CLOSED);
+            GameState.lastFlippedCard.switchCardState(CardState.CLOSED);
+
+            // Empty the clicked state
+            GameState.firstFlippedCard = null;
+            GameState.lastFlippedCard = null;
+            GameState.maxCardsFlipped = false;
+            return this.handleClick();
+        }
+
+        // Currently no cards are flipped, open the first one
+        if (GameState.firstFlippedCard === null) {
+            this.switchCardState(CardState.OPEN);
+            GameState.firstFlippedCard = this;
+        }
+        else {
+            // Check if one card is already open, if so check if the value matches with the one clicked
             GameState.clickInProgress = true;
 
             // If the card matched with the previous card
-            if (this.value === GameState.clickedCard.value) {
+            if (this.value === GameState.firstFlippedCard.value) {
                 this.switchCardState(CardState.OPEN);
                 this.switchCardState(CardState.FOUND);
 
-                GameState.clickedCard.switchCardState(CardState.FOUND);
-                GameState.clickedCard = null;
-                GameState.clickInProgress = false;
+                GameState.firstFlippedCard.switchCardState(CardState.FOUND);
+                GameState.firstFlippedCard = null;
             }
             else {
                 // Open the card so the user can see the value
                 this.switchCardState(CardState.OPEN);
-
-                // Assign the current card 'this' to a variable, because the value of 'this' will change inside a timeout function
-                let card = this;
-                // The card did not match with the previous card, flip both cards after a second delay
-                setTimeout(function() {
-                    card.switchCardState(CardState.CLOSED);
-                    GameState.clickedCard.switchCardState(CardState.CLOSED);
-
-                    // Empty the clicked state
-                    GameState.clickedCard = null;
-                    GameState.clickInProgress = false;
-                }, 1000);
+                GameState.lastFlippedCard = this;
+                GameState.maxCardsFlipped = true;
             }
-        }
-        else {
-            // Currently no cards are flipped, open the first one
-            this.switchCardState(CardState.OPEN);
-            GameState.clickedCard = this;
+
+            GameState.clickInProgress = false;
         }
     }
 
@@ -191,8 +195,10 @@ class CardState
 // Contains the current state of the game
 class GameState
 {
-    static clickedCard = null;
+    static firstFlippedCard = null;
+    static lastFlippedCard = null;
     static clickInProgress = false;
+    static maxCardsFlipped = false;
 }
 
 // Represents all the dynamic settings in the memory game
