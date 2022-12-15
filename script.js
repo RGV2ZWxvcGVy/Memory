@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+function updateFoundCardPairs(foundCardPairs) {
+    document.getElementById("foundCardPairs").innerHTML = foundCardPairs;
+}
+
 function addClass(element, className) {
     if (!element.classList.contains(className)) {
         element.classList.add(className);
@@ -49,8 +53,8 @@ class Cards
             this.cards.push(card);
 
             // Uncomment for debugging purposes
-            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + letter + "</div></div>";
-            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>+</div></div>";
+            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + letter + "</div></div>";
+            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>+</div></div>";
         }
     }
 
@@ -153,6 +157,16 @@ class Card
 
                 GameState.firstFlippedCard.switchCardState(CardState.FOUND);
                 GameState.firstFlippedCard = null;
+                // Add the found card pair to the total found card pairs
+                GameState.foundCardPairs++;
+
+                // Update the found card pairs HTML
+                updateFoundCardPairs(GameState.foundCardPairs);
+
+                // Check if all of the cards are found
+                if (GameState.foundCardPairs === (GameSettings.totalCards / 2)) {
+                    alert("Gefeliciteerd! Je hebt het spel uitgespeeld!");
+                }
             }
             else {
                 // Open the card so the user can see the value
@@ -199,6 +213,7 @@ class GameState
     static lastFlippedCard = null;
     static clickInProgress = false;
     static maxCardsFlipped = false;
+    static foundCardPairs = 0;
 }
 
 // Represents all the dynamic settings in the memory game
