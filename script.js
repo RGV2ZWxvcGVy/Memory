@@ -1,11 +1,57 @@
 document.addEventListener("DOMContentLoaded", function() {
-    let allCards = new Cards();
+    let cards = new Cards();
     // Generate the cards
-    allCards.generateCards();
+    cards.generateCards();
     // Prepare the click event of the cards
-    allCards.prepareCards();
+    cards.prepareCards();
+
+    document.getElementById("settingsForm").addEventListener("submit", function(e) {
+        // Prevent reloading the page
+        e.preventDefault();
+        // Start a new game with the provided settings
+        startNewGame();
+    });
 });
 
+
+function startNewGame() {
+    let character = document.getElementById("character").value;
+    let fieldSize = document.getElementById("size").value;
+    let closedCardColor = document.getElementById("cardColor").value;
+    let openCardColor = document.getElementById("openCardColor").value;
+    let foundCardColor = document.getElementById("foundCardColor").value;
+
+    GameSettings.character = character;
+    GameSettings.fieldSize = fieldSize;
+    GameSettings.totalCards = GameSettings.fieldSize * GameSettings.fieldSize;
+    GameSettings.closedCardColor = closedCardColor;
+    GameSettings.openCardColor = openCardColor;
+    GameSettings.foundCardColor = foundCardColor;
+
+    var styleSheet = document.getElementById("memoryStyle").sheet;
+    styleSheet.insertRule(".card.closed { background-color: " + GameSettings.closedCardColor + "; }", styleSheet.cssRules.length);
+    styleSheet.insertRule(".card.open { background-color: " + GameSettings.openCardColor + "; }", styleSheet.cssRules.length);
+    styleSheet.insertRule(".card.found { background-color: " + GameSettings.foundCardColor + "; }", styleSheet.cssRules.length);
+
+    // TODO: De verschillende afmetingen van het bord responsive maken o.b.v. classes...
+    switch (parseInt(GameSettings.fieldSize)) {
+        case 2:
+            styleSheet.insertRule(".card { width: 250px; height: 250px; }", styleSheet.cssRules.length);
+            break;
+        case 4:
+            styleSheet.insertRule(".card { width: 150px; height: 150px; }", styleSheet.cssRules.length);
+            break;
+        case 6:
+            styleSheet.insertRule(".card { width: 100px; height: 100px; }", styleSheet.cssRules.length);
+            break;
+        default:
+            console.error("Invalid field size");
+    }
+
+    let cards = new Cards();
+    cards.generateCards();
+    cards.prepareCards();
+}
 
 function updateFoundCardPairs(foundCardPairs) {
     document.getElementById("foundCardPairs").innerHTML = foundCardPairs;
@@ -29,6 +75,17 @@ class Cards
 {
     constructor() {
         this.cards = [];
+
+        // Reset the game state when starting a new game
+        GameState.firstFlippedCard = null;
+        GameState.lastFlippedCard = null;
+        GameState.clickInProgress = false;
+        GameState.maxCardsFlipped = false;
+        GameState.foundCardPairs = 0;
+        updateFoundCardPairs(GameState.foundCardPairs);
+
+        // Remove all the cards from the playing field when starting a new game
+        document.getElementById("playingField").innerHTML = "";
     }
 
     // Adds an event listener to each card, so the card knows what to do when it receives a click
@@ -54,7 +111,7 @@ class Cards
 
             // Uncomment for debugging purposes
             // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + letter + "</div></div>";
-            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>+</div></div>";
+            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + GameSettings.character + "</div></div>";
         }
     }
 
@@ -223,4 +280,7 @@ class GameSettings
     static character = "+";
     static fieldSize = 6;
     static totalCards = this.fieldSize * this.fieldSize;
+    static closedCardColor = "#333333";
+    static openCardColor = "#0075FF";
+    static foundCardColor = "#197300";
 }
