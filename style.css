@@ -69,6 +69,22 @@ main {
     margin: .125rem;
 }
 
+/* Specific style for a medium playing field (16 cards) */
+.card:first-child:nth-last-child(16),
+.card:first-child:nth-last-child(16) ~ .card {
+    width: 150px;
+    height: 150px;
+    font-size: 2rem;
+}
+
+/* Specific style for a small playing field (4 cards) */
+.card:first-child:nth-last-child(4),
+.card:first-child:nth-last-child(4) ~ .card {
+    width: 250px;
+    height: 250px;
+    font-size: 3rem;
+}
+
 .card.open {
     background-color: #0075FF;
 }
@@ -149,6 +165,14 @@ aside {
         height: 95px;
     }
 
+    /* Specific style for a medium playing field (16 cards) */
+    .card:first-child:nth-last-child(16),
+    .card:first-child:nth-last-child(16) ~ .card {
+        width: 125px;
+        height: 125px;
+        font-size: 1.75rem;
+    }
+
     .aside-content {
         padding: 1rem 4rem;
     }
@@ -214,6 +238,22 @@ aside {
         height: 58px;
         font-size: 1.25rem;
         margin: .085rem;
+    }
+
+    /* Specific style for a medium playing field (16 cards) */
+    .card:first-child:nth-last-child(16),
+    .card:first-child:nth-last-child(16) ~ .card {
+        width: 75px;
+        height: 75px;
+        font-size: 1.5rem;
+    }
+    
+    /* Specific style for a small playing field (4 cards) */
+    .card:first-child:nth-last-child(4),
+    .card:first-child:nth-last-child(4) ~ .card {
+        width: 175px;
+        height: 175px;
+        font-size: 2rem;
     }
 }
 

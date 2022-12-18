@@ -33,26 +33,11 @@ function startNewGame() {
     GameSettings.openCardColor = openCardColor;
     GameSettings.foundCardColor = foundCardColor;
 
-    var styleSheet = document.getElementById("memoryStyle").sheet;
+    let styleSheet = document.getElementById("memoryStyle").sheet;
     styleSheet.insertRule(".card.closed { background-color: " + GameSettings.closedCardColor + "; }", styleSheet.cssRules.length);
     styleSheet.insertRule(".card.open { background-color: " + GameSettings.openCardColor + "; }", styleSheet.cssRules.length);
     styleSheet.insertRule(".card.found { background-color: " + GameSettings.foundCardColor + "; }", styleSheet.cssRules.length);
-
-    // TODO: De verschillende afmetingen van het bord responsive maken o.b.v. classes...
-    switch (parseInt(GameSettings.fieldSize)) {
-        case 2:
-            styleSheet.insertRule(".card { width: 250px; height: 250px; }", styleSheet.cssRules.length);
-            break;
-        case 4:
-            styleSheet.insertRule(".card { width: 150px; height: 150px; }", styleSheet.cssRules.length);
-            break;
-        case 6:
-            styleSheet.insertRule(".card { width: 100px; height: 100px; }", styleSheet.cssRules.length);
-            break;
-        default:
-            console.error("Invalid field size");
-    }
-
+    
     let cards = new Cards();
     cards.generateCards();
     cards.prepareCards();
@@ -125,7 +110,7 @@ class Cards
 {
     constructor() {
         this.cards = [];
-        
+
         // Reset the game state when starting a new game
         GameState.firstFlippedCard = null;
         GameState.lastFlippedCard = null;
