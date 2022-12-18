@@ -15,6 +15,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 function startNewGame() {
+    // Reset the timers
+    clearInterval(window.elapsedTimer);
+    document.getElementById("time").value = GameSettings.totalPlayTime;
+    document.getElementById("time").max = GameSettings.totalPlayTime;
+
     let character = document.getElementById("character").value;
     let fieldSize = document.getElementById("size").value;
     let closedCardColor = document.getElementById("cardColor").value;
@@ -52,14 +57,20 @@ function startNewGame() {
     cards.generateCards();
     cards.prepareCards();
 
-    let totalSeconds = 500;
-    setInterval(function() {
-        if (totalSeconds <= 1) {
-            // clearInterval here...
+    updateTimers();
+}
+
+function updateTimers() {
+    let elapsedTime = 1;
+    window.elapsedTimer = setInterval(function() {
+        if (elapsedTime >= GameSettings.totalPlayTime) {
+            clearInterval(window.elapsedTimer);
             alert("Game over! De tijd is verlopen.");
         }
 
-        document.getElementById("elapsedTime").innerHTML = --totalSeconds;
+        document.getElementById("remainingTime").innerHTML = GameSettings.totalPlayTime - elapsedTime;
+        document.getElementById("time").value = GameSettings.totalPlayTime - elapsedTime;
+        document.getElementById("elapsedTime").innerHTML = elapsedTime++;
     }, 1000);
 }
 
@@ -114,7 +125,7 @@ class Cards
 {
     constructor() {
         this.cards = [];
-
+        
         // Reset the game state when starting a new game
         GameState.firstFlippedCard = null;
         GameState.lastFlippedCard = null;
@@ -202,6 +213,11 @@ class Card
 
     // Handles the logic when a card has been clicked
     handleClick() {
+        // Start the timers on the first click of the game
+        if (window.elapsedTimer === undefined) {
+            updateTimers();
+        }
+
         // If the same card has been clicked, or the card has already been found, do not continue
         if (GameState.clickInProgress ||
             GameState.firstFlippedCard?.id === this.id ||
@@ -246,6 +262,7 @@ class Card
 
                 // Check if all of the cards are found
                 if (GameState.foundCardPairs === (GameSettings.totalCards / 2)) {
+                    clearInterval(window.elapsedTimer);
                     alert("Gefeliciteerd! Je hebt het spel uitgespeeld!");
                 }
             }
@@ -304,6 +321,7 @@ class GameSettings
     static character = "+";
     static fieldSize = 6;
     static totalCards = this.fieldSize * this.fieldSize;
+    static totalPlayTime = 500;
     static closedCardColor = "#333333";
     static openCardColor = "#0075FF";
     static foundCardColor = "#197300";
