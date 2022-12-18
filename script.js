@@ -51,6 +51,45 @@ function startNewGame() {
     let cards = new Cards();
     cards.generateCards();
     cards.prepareCards();
+
+    let totalSeconds = 500;
+    setInterval(function() {
+        if (totalSeconds <= 1) {
+            // clearInterval here...
+            alert("Game over! De tijd is verlopen.");
+        }
+
+        document.getElementById("elapsedTime").innerHTML = --totalSeconds;
+    }, 1000);
+}
+
+// Create a deck of cards with random letters of the alphabet, and shuffle the deck
+function shuffleLetters() {
+    let result = "";
+    let characters = "";
+
+    for (let i = 0; i < (GameSettings.totalCards / 2); i++) {
+        characters += generateLetters(characters);
+    }
+
+    // Concat the unique letters with eachother to get the matching letters
+    characters = characters.concat(characters);
+
+    for (let i = 0; i < GameSettings.totalCards; i++) {
+        let rng = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(rng);
+        // Create a new array with all of the characters excluding the (random) one that has been added to the result in order to use every character twice
+        characters = characters.slice(0, rng) + characters.slice(rng + 1);
+    }
+
+    return result;
+}
+
+// Generate unique letters for the deck of cards
+function generateLetters(characters) {
+    let rng = Math.floor(Math.random() * GameSettings.totalCards);
+    let letter = GameSettings.letters.charAt(rng);
+    return !characters.includes(letter) ? letter : generateLetters(characters);
 }
 
 function updateFoundCardPairs(foundCardPairs) {
@@ -101,7 +140,7 @@ class Cards
 
     // Generates the cards based on the provided settings
     generateCards() {
-        let letters = this.shuffleLetters();
+        let letters = shuffleLetters();
 
         for (let i = 0; i < GameSettings.totalCards; i++) {
             let id = "card" + (i + 1);
@@ -113,21 +152,6 @@ class Cards
             // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + letter + "</div></div>";
             document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + GameSettings.character + "</div></div>";
         }
-    }
-
-    shuffleLetters() {
-        let result = "";
-        // Concat the letters with eachother to get the matching letters
-        let characters = GameSettings.letters.concat(GameSettings.letters);
-
-        for (let i = 0; i < GameSettings.totalCards; i++) {
-            let rng = Math.floor(Math.random() * characters.length);
-            result += characters.charAt(rng);
-            // Create a new array with all of the characters excluding the (random) one that has been added to the result in order to use every character twice
-            characters = characters.slice(0, rng) + characters.slice(rng + 1);
-        }
-
-        return result;
     }
 }
 
@@ -276,7 +300,7 @@ class GameState
 // Represents all the dynamic settings in the memory game
 class GameSettings
 {
-    static letters = "ABCDEFGHIJKLMNOPQR";
+    static letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     static character = "+";
     static fieldSize = 6;
     static totalCards = this.fieldSize * this.fieldSize;
