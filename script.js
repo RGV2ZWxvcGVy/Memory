@@ -1,23 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
     let cards = new Cards();
+
     // Generate the cards
-    cards.generateCards();
-    // Prepare the click event of the cards
-    cards.prepareCards();
+    if (GameSettings.pictures === "letters") {
+        cards.generateCards();
+    }
+    else {
+        cards.generatePictureCards();
+    }
 
     document.getElementById("settingsForm").addEventListener("submit", function(e) {
         // Prevent reloading the page
         e.preventDefault();
         // Start a new game with the provided settings
         startNewGame();
-    });
-
-    promiseRandomPicture();
-    promiseRandomPicture();
-    Promise.all(window.allPromises).then((value, error) => {
-        console.log(1);
-        console.log(value);
-        console.log(error);
     });
 });
 
@@ -28,18 +24,13 @@ function startNewGame() {
     document.getElementById("time").value = GameSettings.totalPlayTime;
     document.getElementById("time").max = GameSettings.totalPlayTime;
 
-    let character = document.getElementById("character").value;
-    let fieldSize = document.getElementById("size").value;
-    let closedCardColor = document.getElementById("cardColor").value;
-    let openCardColor = document.getElementById("openCardColor").value;
-    let foundCardColor = document.getElementById("foundCardColor").value;
-
-    GameSettings.character = character;
-    GameSettings.fieldSize = fieldSize;
+    GameSettings.character = document.getElementById("character").value;
+    GameSettings.pictures = document.getElementById("picture").value;
+    GameSettings.fieldSize = document.getElementById("size").value;
     GameSettings.totalCards = GameSettings.fieldSize * GameSettings.fieldSize;
-    GameSettings.closedCardColor = closedCardColor;
-    GameSettings.openCardColor = openCardColor;
-    GameSettings.foundCardColor = foundCardColor;
+    GameSettings.closedCardColor = document.getElementById("cardColor").value;
+    GameSettings.openCardColor = document.getElementById("openCardColor").value;
+    GameSettings.foundCardColor = document.getElementById("foundCardColor").value;
 
     let styleSheet = document.getElementById("memoryStyle").sheet;
     styleSheet.insertRule(".card.closed { background-color: " + GameSettings.closedCardColor + "; }", styleSheet.cssRules.length);
@@ -47,7 +38,14 @@ function startNewGame() {
     styleSheet.insertRule(".card.found { background-color: " + GameSettings.foundCardColor + "; }", styleSheet.cssRules.length);
     
     let cards = new Cards();
-    cards.generateCards();
+
+    if (GameSettings.pictures === "letters") {
+        cards.generateCards();
+    }
+    else {
+        cards.generatePictureCards();
+    }
+
     cards.prepareCards();
 
     updateTimers();
@@ -75,8 +73,6 @@ function shuffleLetters() {
     for (let i = 0; i < (GameSettings.totalCards / 2); i++) {
         let letter = generateLetters(characters);
         characters += letter;
-
-
     }
 
     // Concat the unique letters with eachother to get the matching letters
@@ -99,6 +95,29 @@ function generateLetters(characters) {
     return !characters.includes(letter) ? letter : generateLetters(characters);
 }
 
+async function shufflePictures() {
+    let shuffledPictures;
+    let pictures;
+
+    for (let i = 0; i < (GameSettings.totalCards / 2); i++) {
+        promiseRandomPicture();
+    }
+
+    // TODO: catch on error: https://www.geeksforgeeks.org/javascript-promises/
+    await Promise.all(window.allPromises).then((value) => {
+        pictures = value;
+        pictures = pictures.concat(pictures);
+    });
+
+    // TODO: this is not random...
+    shuffledPictures = pictures.sort(function() {
+        return Math.floor(Math.random() * pictures.length);
+    });
+
+    return shuffledPictures;
+}
+
+// Get a random picture from Lorem Picsum
 function promiseRandomPicture() {
     if (!window.allPromises) {
         window.allPromises = [];
@@ -122,16 +141,6 @@ function promiseRandomPicture() {
     });
 
     window.allPromises.push(promise);
-
-    // promise.then(
-    //     function(value) {
-    //         return window.URL.createObjectURL(value);
-    //     },
-    //     function(error) {
-    //         console.error(error);
-    //         return "/images/no-image.jpeg";
-    //     }
-    // );
 }
 
 function updateFoundCardPairs(foundCardPairs) {
@@ -194,6 +203,25 @@ class Cards
             // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + letter + "</div></div>";
             document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + GameSettings.character + "</div></div>";
         }
+
+        this.prepareCards();
+    }
+
+    async generatePictureCards() {
+        let pictures = await shufflePictures();
+
+        for (let i = 0; i < GameSettings.totalCards; i++) {
+            let id = "card" + (i + 1);
+            let picture = window.URL.createObjectURL(pictures[i]);
+            let card = new Card(id, picture);
+            this.cards.push(card);
+
+            // Uncomment for debugging purposes
+            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div><img src=\"" + picture + "\" /></div></div>";
+            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + GameSettings.character + "</div></div>";
+        }
+
+        this.prepareCards();
     }
 }
 
