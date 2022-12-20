@@ -123,16 +123,22 @@ aside {
 
 .average-playtime {
     margin-top: 1.25rem;
-    margin-bottom: 1rem;
 }
 
 .playing-field-size {
     margin-top: .75rem;
-    margin-bottom: 1.5rem;
+}
+
+.aside-content form > div {
+    margin-top: 1rem;
 }
 
 .aside-content select {
     width: 30%;
+}
+
+.aside-content select#picture {
+    width: 100%;
 }
 
 .color-settings .color-input button {

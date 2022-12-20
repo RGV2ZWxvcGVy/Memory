@@ -11,6 +11,14 @@ document.addEventListener("DOMContentLoaded", function() {
         // Start a new game with the provided settings
         startNewGame();
     });
+
+    promiseRandomPicture();
+    promiseRandomPicture();
+    Promise.all(window.allPromises).then((value, error) => {
+        console.log(1);
+        console.log(value);
+        console.log(error);
+    });
 });
 
 
@@ -65,7 +73,10 @@ function shuffleLetters() {
     let characters = "";
 
     for (let i = 0; i < (GameSettings.totalCards / 2); i++) {
-        characters += generateLetters(characters);
+        let letter = generateLetters(characters);
+        characters += letter;
+
+
     }
 
     // Concat the unique letters with eachother to get the matching letters
@@ -86,6 +97,41 @@ function generateLetters(characters) {
     let rng = Math.floor(Math.random() * GameSettings.totalCards);
     let letter = GameSettings.letters.charAt(rng);
     return !characters.includes(letter) ? letter : generateLetters(characters);
+}
+
+function promiseRandomPicture() {
+    if (!window.allPromises) {
+        window.allPromises = [];
+    }
+
+    let promise = new Promise(function(resolve, reject) {
+        let request = new XMLHttpRequest();
+        request.responseType = "blob";
+        request.open("GET", "https://picsum.photos/100/", true);
+
+        request.onload = function() {
+            if (request.status == 200) {
+                resolve(request.response);
+            }
+            else {
+                reject("Picture not found");
+            }
+        };
+
+        request.send();
+    });
+
+    window.allPromises.push(promise);
+
+    // promise.then(
+    //     function(value) {
+    //         return window.URL.createObjectURL(value);
+    //     },
+    //     function(error) {
+    //         console.error(error);
+    //         return "/images/no-image.jpeg";
+    //     }
+    // );
 }
 
 function updateFoundCardPairs(foundCardPairs) {
@@ -157,6 +203,7 @@ class Card
     constructor(id, value) {
         this.id = id
         this.value = value;
+        this.picture = "";
         this.state = new State();
     }
 
@@ -304,6 +351,7 @@ class GameSettings
 {
     static letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     static character = "+";
+    static pictures = "letters";
     static fieldSize = 6;
     static totalCards = this.fieldSize * this.fieldSize;
     static totalPlayTime = 500;
