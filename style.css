@@ -138,7 +138,7 @@ aside {
 }
 
 .aside-content select#picture {
-    width: 100%;
+    width: 50%;
 }
 
 .color-settings .color-input button {

@@ -1,13 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     let cards = new Cards();
 
-    // Generate the cards
-    if (GameSettings.pictures === "letters") {
-        cards.generateCards();
-    }
-    else {
-        cards.generatePictureCards();
-    }
+    // Generate the cards with letters or pictures based on the settings
+    GameSettings.pictures ? cards.generatePictureCards() : cards.generateCards();
 
     document.getElementById("settingsForm").addEventListener("submit", function(e) {
         // Prevent reloading the page
@@ -25,7 +20,7 @@ function startNewGame() {
     document.getElementById("time").max = GameSettings.totalPlayTime;
 
     GameSettings.character = document.getElementById("character").value;
-    GameSettings.pictures = document.getElementById("picture").value;
+    GameSettings.pictures = document.getElementById("picture").value === "randomPictures";
     GameSettings.fieldSize = document.getElementById("size").value;
     GameSettings.totalCards = GameSettings.fieldSize * GameSettings.fieldSize;
     GameSettings.closedCardColor = document.getElementById("cardColor").value;
@@ -36,18 +31,13 @@ function startNewGame() {
     styleSheet.insertRule(".card.closed { background-color: " + GameSettings.closedCardColor + "; }", styleSheet.cssRules.length);
     styleSheet.insertRule(".card.open { background-color: " + GameSettings.openCardColor + "; }", styleSheet.cssRules.length);
     styleSheet.insertRule(".card.found { background-color: " + GameSettings.foundCardColor + "; }", styleSheet.cssRules.length);
-    
+
     let cards = new Cards();
 
-    if (GameSettings.pictures === "letters") {
-        cards.generateCards();
-    }
-    else {
-        cards.generatePictureCards();
-    }
-
+    GameSettings.pictures ? cards.generatePictureCards() : cards.generateCards();
     cards.prepareCards();
 
+    // TODO: Only start the timer on the first click of a new game...
     updateTimers();
 }
 
@@ -57,6 +47,7 @@ function updateTimers() {
         if (elapsedTime >= GameSettings.totalPlayTime) {
             clearInterval(window.elapsedTimer);
             alert("Game over! De tijd is verlopen.");
+            // TODO: Remove handleClick event listener for all cards...
         }
 
         document.getElementById("remainingTime").innerHTML = GameSettings.totalPlayTime - elapsedTime;
@@ -81,7 +72,8 @@ function shuffleLetters() {
     for (let i = 0; i < GameSettings.totalCards; i++) {
         let rng = Math.floor(Math.random() * characters.length);
         result += characters.charAt(rng);
-        // Create a new array with all of the characters excluding the (random) one that has been added to the result in order to use every character twice
+        // Create a new array with all of the characters excluding the (random) one that has been added to the result
+        // This ensures every character is used twice
         characters = characters.slice(0, rng) + characters.slice(rng + 1);
     }
 
@@ -95,34 +87,29 @@ function generateLetters(characters) {
     return !characters.includes(letter) ? letter : generateLetters(characters);
 }
 
+// Shuffle all of the pictures that are returned from the promise
 async function shufflePictures() {
-    let shuffledPictures;
     let pictures;
 
     for (let i = 0; i < (GameSettings.totalCards / 2); i++) {
         promiseRandomPicture();
     }
 
-    // TODO: catch on error: https://www.geeksforgeeks.org/javascript-promises/
+    // We could catch on error, however the memory game is not playable with one picture missing
     await Promise.all(window.allPromises).then((value) => {
-        pictures = value;
-        pictures = pictures.concat(pictures);
+        // Concat the pictures from the promise to get the matching pictures
+        pictures = value.concat(value);
     });
 
-    // TODO: this is not random...
-    shuffledPictures = pictures.sort(function() {
-        return Math.floor(Math.random() * pictures.length);
-    });
-
-    return shuffledPictures;
+    // Randomly shuffle the pictures
+    return pictures.sort(() => 0.5 - Math.random());
 }
 
 // Get a random picture from Lorem Picsum
 function promiseRandomPicture() {
-    if (!window.allPromises) {
-        window.allPromises = [];
-    }
+    window.allPromises ??= [];
 
+    // Fetch a picture as a blob, to create an object url later on
     let promise = new Promise(function(resolve, reject) {
         let request = new XMLHttpRequest();
         request.responseType = "blob";
@@ -140,6 +127,7 @@ function promiseRandomPicture() {
         request.send();
     });
 
+    // Push the promise into a global array containing all promises, so we can resolve them later
     window.allPromises.push(promise);
 }
 
@@ -178,7 +166,7 @@ class Cards
         document.getElementById("playingField").innerHTML = "";
     }
 
-    // Adds an event listener to each card, so the card knows what to do when it receives a click
+    // Adds an event listener to each card, so the card knows how to handle a click
     prepareCards() {
         for (let i = 0; i < this.cards.length; i++) {
             let card = this.cards[i];
@@ -199,7 +187,7 @@ class Cards
             let card = new Card(id, letter);
             this.cards.push(card);
 
-            // Uncomment for debugging purposes
+            // -- UNCOMMENT FOR DEBUGGING PURPOSES --
             // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + letter + "</div></div>";
             document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + GameSettings.character + "</div></div>";
         }
@@ -207,6 +195,7 @@ class Cards
         this.prepareCards();
     }
 
+    // Generates the picture cards based on the provided settings
     async generatePictureCards() {
         let pictures = await shufflePictures();
 
@@ -216,7 +205,7 @@ class Cards
             let card = new Card(id, picture);
             this.cards.push(card);
 
-            // Uncomment for debugging purposes
+            // -- UNCOMMENT FOR DEBUGGING PURPOSES --
             document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div><img src=\"" + picture + "\" /></div></div>";
             // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + GameSettings.character + "</div></div>";
         }
@@ -231,10 +220,10 @@ class Card
     constructor(id, value) {
         this.id = id
         this.value = value;
-        this.picture = "";
         this.state = new State();
     }
 
+    // TODO: Make the open and closed methods compatible with picture cards...
     open(cardDOM) {
         cardDOM.innerHTML = cardDOM.innerHTML.replace(GameSettings.character, this.value);
     }
@@ -379,7 +368,7 @@ class GameSettings
 {
     static letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     static character = "+";
-    static pictures = "letters";
+    static pictures = false;
     static fieldSize = 6;
     static totalCards = this.fieldSize * this.fieldSize;
     static totalPlayTime = 500;
