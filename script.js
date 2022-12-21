@@ -89,7 +89,7 @@ function generateLetters(characters) {
 
 // Shuffle all of the pictures that are returned from the promise
 async function shufflePictures() {
-    let pictures;
+    let pictures = [];
 
     for (let i = 0; i < (GameSettings.totalCards / 2); i++) {
         promiseRandomPicture();
@@ -97,8 +97,9 @@ async function shufflePictures() {
 
     // We could catch on error, however the memory game is not playable with one picture missing
     await Promise.all(window.allPromises).then((value) => {
-        // Concat the pictures from the promise to get the matching pictures
-        pictures = value.concat(value);
+        value.forEach((blob) => pictures.push(window.URL.createObjectURL(blob)));
+        // Concat the pictures with eachother to get the matching pictures
+        pictures = pictures.concat(pictures);
     });
 
     // Randomly shuffle the pictures
@@ -201,13 +202,13 @@ class Cards
 
         for (let i = 0; i < GameSettings.totalCards; i++) {
             let id = "card" + (i + 1);
-            let picture = window.URL.createObjectURL(pictures[i]);
+            let picture = pictures[i];
             let card = new Card(id, picture);
             this.cards.push(card);
 
             // -- UNCOMMENT FOR DEBUGGING PURPOSES --
-            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div><img src=\"" + picture + "\" /></div></div>";
-            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + GameSettings.character + "</div></div>";
+            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div><img src=\"" + picture + "\"></div></div>";
+            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + GameSettings.character + "</div></div>";
         }
 
         this.prepareCards();
@@ -225,11 +226,15 @@ class Card
 
     // TODO: Make the open and closed methods compatible with picture cards...
     open(cardDOM) {
-        cardDOM.innerHTML = cardDOM.innerHTML.replace(GameSettings.character, this.value);
+        cardDOM.innerHTML = GameSettings.pictures ?
+        cardDOM.innerHTML.replace(GameSettings.character, "<img src=\"" + this.value + "\">") :
+        cardDOM.innerHTML.replace(GameSettings.character, this.value);
     }
 
     close(cardDOM) {
-        cardDOM.innerHTML = cardDOM.innerHTML.replace(this.value, GameSettings.character);
+        cardDOM.innerHTML = GameSettings.pictures ?
+        cardDOM.innerHTML.replace("<img src=\"" + this.value + "\">", GameSettings.character) :
+        cardDOM.innerHTML.replace(this.value, GameSettings.character);
     }
 
     // Handles most of the logic when opening, closing, and finding matches of cards to prevent duplicate code
