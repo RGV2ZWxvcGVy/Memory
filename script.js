@@ -16,8 +16,13 @@ document.addEventListener("DOMContentLoaded", function() {
 function startNewGame() {
     // Reset the timers
     clearInterval(window.elapsedTimer);
+    window.elapsedTimer = undefined;
+
+    document.getElementById("elapsedTime").innerHTML = 0;
+    document.getElementById("remainingTime").innerHTML = GameSettings.totalPlayTime;
     document.getElementById("time").value = GameSettings.totalPlayTime;
     document.getElementById("time").max = GameSettings.totalPlayTime;
+    document.getElementById("playingField").style.pointerEvents = "initial";
 
     GameSettings.character = document.getElementById("character").value;
     GameSettings.pictures = document.getElementById("picture").value === "randomPictures";
@@ -36,9 +41,6 @@ function startNewGame() {
 
     GameSettings.pictures ? cards.generatePictureCards() : cards.generateCards();
     cards.prepareCards();
-
-    // TODO: Only start the timer on the first click of a new game...
-    updateTimers();
 }
 
 function updateTimers() {
@@ -47,7 +49,8 @@ function updateTimers() {
         if (elapsedTime >= GameSettings.totalPlayTime) {
             clearInterval(window.elapsedTimer);
             alert("Game over! De tijd is verlopen.");
-            // TODO: Remove handleClick event listener for all cards...
+            // Do not continue to execute pointer events
+            document.getElementById("playingField").style.pointerEvents = "none";
         }
 
         document.getElementById("remainingTime").innerHTML = GameSettings.totalPlayTime - elapsedTime;
@@ -114,7 +117,7 @@ function promiseRandomPicture() {
     let promise = new Promise(function(resolve, reject) {
         let request = new XMLHttpRequest();
         request.responseType = "blob";
-        request.open("GET", "https://picsum.photos/100/", true);
+        request.open("GET", "https://picsum.photos/250/", true);
 
         request.onload = function() {
             if (request.status == 200) {
@@ -189,8 +192,8 @@ class Cards
             this.cards.push(card);
 
             // -- UNCOMMENT FOR DEBUGGING PURPOSES --
-            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + letter + "</div></div>";
-            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + GameSettings.character + "</div></div>";
+            // document.getElementById("playingField").innerHTML += "<div class=\"card border closed\" id=\"" + id + "\"><div class=\"inner-card\">" + letter + "</div></div>";
+            document.getElementById("playingField").innerHTML += "<div class=\"card border closed\" id=\"" + id + "\"><div class=\"inner-card\">" + GameSettings.character + "</div></div>";
         }
 
         this.prepareCards();
@@ -207,8 +210,8 @@ class Cards
             this.cards.push(card);
 
             // -- UNCOMMENT FOR DEBUGGING PURPOSES --
-            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div><img src=\"" + picture + "\"></div></div>";
-            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div>" + GameSettings.character + "</div></div>";
+            // document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div class=\"inner-card\">" + GameSettings.character + "<img src=\"" + picture + "\"></div></div>";
+            document.getElementById("playingField").innerHTML += "<div class=\"card closed\" id=\"" + id + "\"><div class=\"inner-card\">" + GameSettings.character + "</div></div>";
         }
 
         this.prepareCards();
@@ -224,16 +227,15 @@ class Card
         this.state = new State();
     }
 
-    // TODO: Make the open and closed methods compatible with picture cards...
     open(cardDOM) {
         cardDOM.innerHTML = GameSettings.pictures ?
-        cardDOM.innerHTML.replace(GameSettings.character, "<img src=\"" + this.value + "\">") :
+        cardDOM.innerHTML.replace(GameSettings.character, "<span>" + GameSettings.character + "</span><img src=\"" + this.value + "\">") :
         cardDOM.innerHTML.replace(GameSettings.character, this.value);
     }
 
     close(cardDOM) {
         cardDOM.innerHTML = GameSettings.pictures ?
-        cardDOM.innerHTML.replace("<img src=\"" + this.value + "\">", GameSettings.character) :
+        cardDOM.innerHTML.replace("<span>" + GameSettings.character + "</span><img src=\"" + this.value + "\">", GameSettings.character) :
         cardDOM.innerHTML.replace(this.value, GameSettings.character);
     }
 
