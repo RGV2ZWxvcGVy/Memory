@@ -1,3 +1,7 @@
+// Define some global variables for celebration mode
+const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF'];
+let currentColorIndex = 0;
+
 document.addEventListener("DOMContentLoaded", function() {
     let cards = new Cards();
 
@@ -14,8 +18,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 function startNewGame() {
-    // Reset the timers
+    // Reset the interval functions, global variables, static class variables, and timers
+    clearInterval(window.foo);
     clearInterval(window.elapsedTimer);
+    window.foo = undefined;
     window.elapsedTimer = undefined;
     window.allPromises = [];
 
@@ -34,7 +40,7 @@ function startNewGame() {
     document.getElementById("time").max = GameSettings.totalPlayTime;
     document.getElementById("playingField").style.pointerEvents = "initial";
 
-    // Create a style element in the head of the DOM to get the dynamic color the user picked
+    // Create a style element in the head of the DOM to get the dynamic color the player picked
     window.cardStyle ??= document.createElement('style');
     window.cardStyle.innerHTML = ".card.closed {\n\tbackground-color: " + GameSettings.closedCardColor.toUpperCase() + ";\n}\n\n";
     window.cardStyle.innerHTML += ".card.open {\n\tbackground-color: " + GameSettings.openCardColor.toUpperCase() + ";\n}\n\n";
@@ -46,14 +52,33 @@ function startNewGame() {
     cards.prepareCards();
 }
 
+// Ends the current game of memory. If the max time has been elapsed, the player has lost, else the player has won the game
+function gameOver(maxTimeElapsed) {
+    clearInterval(window.elapsedTimer);
+
+    if (maxTimeElapsed) {
+        alert("Game over! De tijd is verlopen.");
+        // Do not continue to execute pointer events
+        document.getElementById("playingField").style.pointerEvents = "none";
+    }
+    else {
+        alert("Gefeliciteerd! Je hebt het spel uitgespeeld!");
+        updateColors();
+
+        let innerCards = document.querySelectorAll(".inner-card");
+        innerCards.forEach(card => {
+            card.innerHTML = GameSettings.character;
+            addClass(card, "hidden");
+        });
+    }
+}
+
+// Update the timers in the header
 function updateTimers() {
     let elapsedTime = 1;
     window.elapsedTimer = setInterval(function() {
         if (elapsedTime >= GameSettings.totalPlayTime) {
-            clearInterval(window.elapsedTimer);
-            alert("Game over! De tijd is verlopen.");
-            // Do not continue to execute pointer events
-            document.getElementById("playingField").style.pointerEvents = "none";
+            gameOver(true);
         }
 
         document.getElementById("remainingTime").innerHTML = GameSettings.totalPlayTime - elapsedTime;
@@ -140,6 +165,19 @@ function promiseRandomPicture() {
 
 function updateFoundCardPairs(foundCardPairs) {
     document.getElementById("foundCardPairs").innerHTML = foundCardPairs;
+}
+
+// Celebration mode for when the player has won the game
+function updateColors() {
+    window.foo = setInterval(function() {
+        let cards = document.getElementsByClassName("card");
+        for (let i = 0; i < cards.length; i++) {
+            cards[i].style.transition = 'background-color 1s ease';
+            cards[i].style.backgroundColor = colors[currentColorIndex];
+        }
+
+        currentColorIndex = (currentColorIndex + 1) % colors.length;
+    }, 1000);
 }
 
 function addClass(element, className) {
@@ -321,12 +359,11 @@ class Card
 
                 // Check if all of the cards are found
                 if (GameState.foundCardPairs === (GameSettings.totalCards / 2)) {
-                    clearInterval(window.elapsedTimer);
-                    alert("Gefeliciteerd! Je hebt het spel uitgespeeld!");
+                    gameOver(false);
                 }
             }
             else {
-                // Open the card so the user can see the value
+                // Open the card so the player can see the value
                 this.switchCardState(CardState.OPEN);
                 GameState.lastFlippedCard = this;
                 GameState.maxCardsFlipped = true;
