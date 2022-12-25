@@ -32,13 +32,14 @@ function startNewGame() {
     GameSettings.openCardColor = document.getElementById("openCardColor").value;
     GameSettings.foundCardColor = document.getElementById("foundCardColor").value;
 
-    let styleSheet = document.getElementById("memoryStyle").sheet;
-    styleSheet.insertRule(".card.closed { background-color: " + GameSettings.closedCardColor + "; }", styleSheet.cssRules.length);
-    styleSheet.insertRule(".card.open { background-color: " + GameSettings.openCardColor + "; }", styleSheet.cssRules.length);
-    styleSheet.insertRule(".card.found { background-color: " + GameSettings.foundCardColor + "; }", styleSheet.cssRules.length);
+    // Create a style element in the head of the DOM to get the dynamic color the user picked
+    window.cardStyle ??= document.createElement('style');
+    window.cardStyle.innerHTML = ".card.closed {\n\tbackground-color: " + GameSettings.closedCardColor.toUpperCase() + ";\n}\n\n";
+    window.cardStyle.innerHTML += ".card.open {\n\tbackground-color: " + GameSettings.openCardColor.toUpperCase() + ";\n}\n\n";
+    window.cardStyle.innerHTML += ".card.found {\n\tbackground-color: " + GameSettings.foundCardColor.toUpperCase() + ";\n}";
+    document.head.appendChild(window.cardStyle);
 
     let cards = new Cards();
-
     GameSettings.pictures ? cards.generatePictureCards() : cards.generateCards();
     cards.prepareCards();
 }
