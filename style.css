@@ -101,6 +101,10 @@ main {
     background-color: #197300;
 }
 
+.card.found img {
+    filter: grayscale(100%);
+}
+
 .card.closed:hover {
     cursor: pointer;
     color: #333333;

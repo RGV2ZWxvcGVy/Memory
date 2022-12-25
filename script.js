@@ -17,20 +17,22 @@ function startNewGame() {
     // Reset the timers
     clearInterval(window.elapsedTimer);
     window.elapsedTimer = undefined;
+    window.allPromises = [];
+
+    GameSettings.character = document.getElementById("character").value;
+    GameSettings.pictures = document.getElementById("picture").value === "randomPictures";
+    GameSettings.fieldSize = document.getElementById("size").value;
+    GameSettings.totalCards = GameSettings.fieldSize * GameSettings.fieldSize;
+    GameSettings.totalPlayTime = 7 * GameSettings.totalCards;
+    GameSettings.closedCardColor = document.getElementById("cardColor").value;
+    GameSettings.openCardColor = document.getElementById("openCardColor").value;
+    GameSettings.foundCardColor = document.getElementById("foundCardColor").value;
 
     document.getElementById("elapsedTime").innerHTML = 0;
     document.getElementById("remainingTime").innerHTML = GameSettings.totalPlayTime;
     document.getElementById("time").value = GameSettings.totalPlayTime;
     document.getElementById("time").max = GameSettings.totalPlayTime;
     document.getElementById("playingField").style.pointerEvents = "initial";
-
-    GameSettings.character = document.getElementById("character").value;
-    GameSettings.pictures = document.getElementById("picture").value === "randomPictures";
-    GameSettings.fieldSize = document.getElementById("size").value;
-    GameSettings.totalCards = GameSettings.fieldSize * GameSettings.fieldSize;
-    GameSettings.closedCardColor = document.getElementById("cardColor").value;
-    GameSettings.openCardColor = document.getElementById("openCardColor").value;
-    GameSettings.foundCardColor = document.getElementById("foundCardColor").value;
 
     // Create a style element in the head of the DOM to get the dynamic color the user picked
     window.cardStyle ??= document.createElement('style');
@@ -379,7 +381,7 @@ class GameSettings
     static pictures = false;
     static fieldSize = 6;
     static totalCards = this.fieldSize * this.fieldSize;
-    static totalPlayTime = 500;
+    static totalPlayTime = 7 * this.totalCards;
     static closedCardColor = "#333333";
     static openCardColor = "#0075FF";
     static foundCardColor = "#197300";
