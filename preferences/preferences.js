@@ -1,9 +1,18 @@
 document.addEventListener("DOMContentLoaded", function() {
     loginOrAccount();
+    fetchEmail();
 
     addEventListener('submit', (event) => {
         event.preventDefault();
-        savePreferences();
+
+        let preferencesForm = document.getElementById("preferencesForm");
+        let emailForm = document.getElementById("emailForm");
+        if (event.target === preferencesForm) {
+            savePreferences();
+        }
+        else if (event.target === emailForm) {
+            editEmail();
+        }
     });
 
     if (window.location.search?.includes("?preferences_saved=1")) {
@@ -26,7 +35,7 @@ function savePreferences() {
     // let openCardColor = document.getElementById('openCardColor').value;
     let foundCardColor = document.getElementById('foundCardColor').value;
 
-    const token = getJWTTokenData();
+    const token = getJWTData();
     if (token) {
         fetch(`http://localhost:8000/api/player/${token.id}/preferences`, {
             method: 'POST',
@@ -44,5 +53,54 @@ function savePreferences() {
                 window.location = "/preferences?preferences_saved=0";
             }
         });
+    }
+}
+
+function editEmail() {
+    // Check if the user is logged in
+    loginOrAccount();
+
+    let email = document.getElementById("email").value;
+
+    const token = getJWTData();
+    if (token) {
+        fetch(`http://localhost:8000/api/player/${token.id}/email`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': token.auth,
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: `{"email":"${email}"}`
+        })
+            .then(response => {
+                if (response.status === 204 && response.ok) {
+                    window.location = "/preferences?preferences_saved=1";
+                }
+                else {
+                    window.location = "/preferences?preferences_saved=0";
+                }
+            });
+    }
+}
+
+function fetchEmail() {
+    const token = getJWTData();
+    if (token) {
+        if (token.id) {
+            fetch(`http://localhost:8000/api/player/${token.id}/email`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': token.auth
+                }
+            })
+            .then(response => {
+                if (response.status === 200 && response.ok) {
+                    return response.json();
+                }
+            })
+            .then(json => {
+                document.getElementById("email").value = json;
+            });
+        }
     }
 }

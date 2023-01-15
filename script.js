@@ -3,8 +3,13 @@ const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF'
 let currentColorIndex = 0;
 
 document.addEventListener("DOMContentLoaded", function() {
-    let cards = new Cards();
+    // Check if the player is logged in, and execute 'startNewGame' as callback if logged in
+    loginOrAccount(startNewGame);
 
+    // Initialize the modal in case the token is almost expired
+    initModal();
+
+    let cards = new Cards();
     // Generate the cards with letters or pictures based on the settings
     GameSettings.pictures ? cards.generatePictureCards() : cards.generateCards();
 

@@ -1,6 +1,8 @@
 
-function loginOrAccount() {
-    const token = getJWTTokenData();
+function loginOrAccount(callback) {
+    // Only redirect the player on the preferences page
+    const redirect = window.location.pathname.includes("/preferences");
+    const token = getJWTData();
 
     if (token) {
         if (token.id) {
@@ -15,17 +17,24 @@ function loginOrAccount() {
                     return response.json();
                 }
 
-                window.location = "/login?token_expired=1";
+                if (redirect) {
+                    window.location = "/login?token_expired=1";
+                }
             })
             .then(json => {
-                if (window.location.pathname === "/preferences") {
-                    setPreferences(json);
+                setPreferences(json);
+
+                // Execute the callback if present
+                if (callback) {
+                    callback();
                 }
             });
         }
     }
     else {
-        window.location = "/login?not_logged_in=1";
+        if (redirect) {
+            window.location = "/login?not_logged_in=1";
+        }
     }
 }
 
@@ -38,7 +47,7 @@ function setPreferences(json) {
     document.getElementById('foundCardColor').value = json.color_found;
 }
 
-function getJWTTokenData() {
+function getJWTData() {
     const token = localStorage.getItem('JWT');
     if (token?.length) {
         const auth = `Bearer ${token}`;
@@ -50,4 +59,27 @@ function getJWTTokenData() {
     }
 
     return token;
+}
+
+function isTokenExpired() {
+    const token = getJWTData()?.auth.split(' ')[1];
+    if (token) {
+        const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+        return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+    }
+
+    return true;
+}
+
+function initModal() {
+    const modal = document.getElementById("infoModal");
+    const span = document.getElementById("closeModal");
+
+    span.onclick = function() {
+        modal.classList.add("hidden");
+    }
+
+    if (isTokenExpired()) {
+        modal.classList.remove("hidden");
+    }
 }

@@ -5,14 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Javascript Memory</title>
+    <link rel="stylesheet" href="/modal.css" />
     <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+    <div class="modal hidden" id="infoModal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <p>Uw loginsessie verloopt binnen 5 minuten. Klik <a href="/login">hier</a> om opnieuw in te loggen.</p>
+        </div>
+    </div>
+
     <div class="nav">
         <a href="/login">Inloggen</a> |
         <a href="/register">Registreren</a> |
         <a href="/preferences">Voorkeuren</a>
     </div>
+
     <header>
         <div class="header-content">
             <div class="stats">
@@ -27,6 +36,7 @@
             </div>
         </div>
     </header>
+
     <main>
         <div class="main-content">
             <div class="playing-field">
@@ -34,6 +44,7 @@
             </div>
         </div>
     </main>
+
     <aside>
         <div class="aside-content">
             <div class="top-five">
@@ -118,7 +129,9 @@
             </form>
         </div>
     </aside>
+
     <footer>
+        <script src="/global.js"></script>
         <script src="/script.js"></script>
     </footer>
 </body>
