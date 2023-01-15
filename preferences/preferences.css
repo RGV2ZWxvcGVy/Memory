@@ -1,0 +1,103 @@
+.characters,
+.pictures,
+.playing-field-size {
+    margin-bottom: 8px;
+}
+
+.col-left,
+.col-right {
+    display: inline-block;
+}
+
+.col-left {
+    width: 37.5%;
+}
+
+.col-right {
+    width: 60%;
+}
+
+select {
+    width: 25%;
+}
+
+.color-settings {
+    margin-top: 2rem;
+}
+
+.color-settings button.btn-default {
+    width: 15%;
+}
+
+.color-settings .color-input input {
+    width: 20%;
+    height: 32px;
+    border: unset;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+button[type=submit] {
+    margin-top: 2rem;
+}
+
+
+@media only screen and (max-width: 1200px) {
+    .col-left {
+        width: 45%;
+    }
+
+    .col-right {
+        width: 50%;
+    }
+
+    select {
+        width: 35%;
+    }
+
+    .color-settings button.btn-default {
+        width: 20%;
+    }
+
+    .color-settings .color-input input {
+        width: 30%;
+    }
+}
+
+@media only screen and (max-width: 850px) {
+    .col-left {
+        width: 55%;
+    }
+
+    .col-right {
+        width: 40%;
+    }
+
+    select {
+        width: 55%;
+    }
+
+    .color-settings button.btn-default {
+        width: 30%;
+    }
+
+    .color-settings .color-input input {
+        width: 40%;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .col-left,
+    .col-right {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    button.btn-default,
+    .color-settings .color-input input {
+        display: block;
+        width: 30%;
+        margin-left: 0;
+    }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Voorkeuren</title>
+    <link rel="stylesheet" href="/form.css" />
+    <link rel="stylesheet" href="/preferences/preferences.css" />
+</head>
+<body>
+<header>
+    <h2>Voorkeuren</h2>
+    <a href="/">< Terug</a>
+
+    <div class="alert alert-success hidden" id="preferencesSavedAlert">
+        <p>Voorkeuren succesvol opgeslagen!</p>
+    </div>
+
+    <div class="alert alert-danger hidden" id="preferencesNotSavedAlert">
+        <p>Voorkeuren opslaan mislukt. Probeer het opnieuw.</p>
+    </div>
+</header>
+
+<form action="/" method="post" id="preferencesForm">
+    <div class="container">
+        <p>Kies hier uw voorkeuren voor het memory spel.</p>
+    </div>
+
+    <div class="container">
+        <div class="characters">
+            <div class="col-left">
+                <label for="character"><b>Karakter op kaarten</b></label>
+            </div>
+            <div class="col-right">
+                <select name="character" id="character">
+                    <option>@</option>
+                    <option>#</option>
+                    <option>%</option>
+                    <option selected>+</option>
+                    <option>X</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="pictures">
+            <div class="col-left">
+                <label for="picture"><b>Kies hier uw plaatjes</b></label>
+            </div>
+            <div class="col-right">
+                <select name="picture" id="picture">
+                    <option value="letters">Letters</option>
+                    <option value="randomPictures">Willekeurig</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="playing-field-size">
+            <div class="col-left">
+                <label for="size"><b>Afmeting bord</b></label>
+            </div>
+            <div class="col-right">
+                <select name="size" id="size">
+                    <option>2</option>
+                    <option>4</option>
+                    <option selected>6</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="color-settings">
+            <div class="color-input">
+                <button type="button" class="btn-default">
+                    <label for="cardColor">Kaartkleur</label>
+                </button>
+                <input type="color" name="cardColor" id="cardColor" value="#333333" />
+            </div>
+
+            <div class="color-input">
+                <button type="button" class="btn-default">
+                    <label for="openCardColor">Open</label>
+                </button>
+                <input type="color" name="openCardColor" id="openCardColor" value="#0075FF" />
+            </div>
+
+            <div class="color-input">
+                <button type="button" class="btn-default">
+                    <label for="foundCardColor">Gevonden</label>
+                </button>
+                <input type="color" name="foundCardColor" id="foundCardColor" value="#197300" />
+            </div>
+        </div>
+
+        <button type="submit" id="submit">Opslaan</button>
+    </div>
+</form>
+</body>
+
+<footer>
+    <script src="/global.js"></script>
+    <script src="/preferences/preferences.js"></script>
+</footer>
+</html>

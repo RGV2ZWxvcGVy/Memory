@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inloggen</title>
+    <link rel="stylesheet" href="/form.css" />
+</head>
+<body>
+<header>
+    <h2>Inloggen</h2>
+    <a href="/">< Terug</a>
+
+    <div class="alert alert-success hidden" id="registerSuccessAlert">
+        <p>Registratie is gelukt!</p>
+    </div>
+
+    <div class="alert alert-danger hidden" id="notLoggedInAlert">
+        <p>Log in om uw voorkeuren te beheren.</p>
+    </div>
+
+    <div class="alert alert-danger hidden" id="tokenExpiredAlert">
+        <p>Uw login is verlopen.</p>
+    </div>
+</header>
+
+<form action="/" method="post" id="loginForm">
+    <div class="imgcontainer">
+        <img src="/img_avatar2.png" alt="Avatar" class="avatar">
+    </div>
+
+    <div class="container">
+        <p>Vul hier uw gegevens in om in te loggen.</p>
+    </div>
+
+    <div class="container">
+        <label for="username"><b>Gebruikersnaam:</b></label>
+        <input type="text" placeholder="Uw gebruikersnaam" name="username" id="username" required>
+
+        <label for="password"><b>Wachtwoord:</b></label>
+        <input type="password" placeholder="Uw wachtwoord" name="password" id="password" required>
+
+        <button type="submit" id="submit">Inloggen</button>
+    </div>
+</form>
+</body>
+
+<footer>
+    <script src="/login/login.js"></script>
+</footer>
+</html>
