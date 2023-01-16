@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-    loginOrAccount();
     fetchEmail();
 
     addEventListener('submit', (event) => {
@@ -84,6 +83,9 @@ function editEmail() {
 }
 
 function fetchEmail() {
+    // Check if the user is logged in
+    loginOrAccount();
+
     const token = getJWTData();
     if (token) {
         if (token.id) {
