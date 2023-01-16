@@ -141,16 +141,17 @@ main {
 
 
 aside {
-    width: 34.5%;
+    width: 375px;
     display: inline-block;
     vertical-align: top;
+    background-color: #FFFFFF;
+    border: 2px solid #333;
 }
 
 .aside-content {
+    width: 75%;
     display: inline-block;
-    background-color: #FFFFFF;
-    border: 2px solid #333;
-    padding: 1rem 6rem;
+    margin: 1rem 4rem;
 }
 
 .average-playtime {
@@ -166,25 +167,26 @@ aside {
 }
 
 .aside-content select {
-    width: 30%;
+    width: 75px;
 }
 
 .aside-content select#picture {
-    width: 50%;
+    width: 100px;
 }
 
 .color-settings .color-input button {
-    width: 40%;
+    width: 100px;
 }
 
 .color-settings .color-input input {
-    width: 55%;
+    width: 100px;
     height: 32px;
     border: unset;
     vertical-align: middle;
 }
 
-.new-game {
+.new-game input {
+    width: 100px;
     margin: 1rem 0;
 }
 
@@ -218,8 +220,13 @@ aside {
         font-size: 1.75rem;
     }
 
+    aside {
+        width: 320px;
+    }
+
     .aside-content {
-        padding: 1rem 4rem;
+        width: 65%;
+        margin: 1rem 4rem;
     }
 }
 
@@ -227,10 +234,11 @@ aside {
     main {
         width: 100%;
     }
-    
+
     aside {
         width: 100%;
         display: block;
+        border: unset;
         margin: 1rem auto;
     }
 
@@ -265,7 +273,6 @@ aside {
 
     .aside-content {
         padding: 1rem 0;
-        border: unset;
         margin: auto;
     }
 }

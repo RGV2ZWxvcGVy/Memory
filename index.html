@@ -31,7 +31,7 @@
                     <p>Gevonden kaart-paren: <span id="foundCardPairs">0</span></p>
                     
                     <label for="time">Resterende tijd: <span id="remainingTime">252</span> seconden</label>
-                    <progress name="time" id="time" value="252" max="252"></progress>
+                    <progress id="time" value="252" max="252"></progress>
                 </div>
             </div>
         </div>
@@ -49,20 +49,12 @@
         <div class="aside-content">
             <div class="top-five">
                 <h3>Top vijf</h3>
-                <ol>
-                    <li>Barack Obama: <strong>178</strong></li>
-                    <li>Bernie Sanders: <strong>204</strong></li>
-                    <li>Hillary Clinton: <strong>267</strong></li>
-                    <li>Donald Trump: <strong>387</strong></li>
-                    <li>Jeb Bush: <strong>453</strong></li>
-                </ol>
+                <ol id="topFive"></ol>
             </div>
 
             <div class="average-playtime">
-                <div>
-                    <strong>Gemiddelde speeltijd</strong>
-                </div>
-                <div>298 seconden</div>
+                <div><strong>Gemiddelde speeltijd</strong></div>
+                <div id="averagePlaytime"></div>
             </div>
 
             <form id="settingsForm">

@@ -1,4 +1,23 @@
 
+function getScores(callback) {
+    fetch(`http://localhost:8000/scores`, {
+        method: 'GET'
+    })
+    .then(response => {
+        if (response.status === 200 && response.ok) {
+            return response.json();
+        }
+    })
+    .then(json => {
+        let highscores = json.sort((a, b) => a.score - b.score);
+
+        // Execute the callback if present
+        if (callback) {
+            callback(highscores);
+        }
+    });
+}
+
 function loginOrAccount(callback) {
     // Only redirect the player on the preferences page
     const redirect = window.location.pathname.includes("/preferences");
@@ -22,7 +41,9 @@ function loginOrAccount(callback) {
                 }
             })
             .then(json => {
-                setPreferences(json);
+                if (json) {
+                    setPreferences(json);
+                }
 
                 // Execute the callback if present
                 if (callback) {

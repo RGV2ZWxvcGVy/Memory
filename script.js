@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Initialize the modal in case the token is almost expired
     initModal();
+    getScores(setScoreboard);
 
     let cards = new Cards();
     // Generate the cards with letters or pictures based on the settings
@@ -21,6 +22,15 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+
+function setScoreboard(highscores) {
+    let averagePlaytime = document.getElementById("averagePlaytime");
+    let scores = highscores.map(s => s.score);
+    averagePlaytime.innerHTML = (scores.reduce((a, b) => a + b, 0) / scores.length) + " seconden";
+
+    let topFive = document.getElementById("topFive");
+    highscores.slice(0, 5).forEach(highscore => topFive.innerHTML += `<li>${highscore.username}: <b>${highscore.score}</b></li>`);
+}
 
 function startNewGame() {
     // Reset the interval functions, global variables, static class variables, and timers
