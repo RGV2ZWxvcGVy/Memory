@@ -39,23 +39,47 @@ function loginOrAccount(callback) {
     }
 }
 
+function saveGame() {
+    const score = document.getElementById('elapsedTime').innerHTML;
+    const api = document.getElementById('picture').value;
+    const colorClosed = document.getElementById('cardColor').value;
+    const colorFound = document.getElementById('foundCardColor').value;
+
+    const token = getJWTData();
+    if (token) {
+        fetch(`http://localhost:8000/game/save`, {
+            method: 'POST',
+            headers: {
+                'Authorization': token.auth,
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: `{"id":"${token.id}","score":"${score}","api":"${api}","color_closed":"${colorClosed}","color_found":"${colorFound}"}`
+        })
+        .then(response => {
+            if (response.status === 200 && response.ok) {
+                // Game saved successfully
+            }
+        });
+    }
+}
+
 function getScores(callback) {
     fetch(`http://localhost:8000/scores`, {
         method: 'GET'
     })
-        .then(response => {
-            if (response.status === 200 && response.ok) {
-                return response.json();
-            }
-        })
-        .then(json => {
-            let highscores = json.sort((a, b) => a.score - b.score);
+    .then(response => {
+        if (response.status === 200 && response.ok) {
+            return response.json();
+        }
+    })
+    .then(json => {
+        let highscores = json.sort((a, b) => a.score - b.score);
 
-            // Execute the callback if present
-            if (callback) {
-                callback(highscores);
-            }
-        });
+        // Execute the callback if present
+        if (callback) {
+            callback(highscores);
+        }
+    });
 }
 
 function getJWTData() {
@@ -133,7 +157,7 @@ function initModal() {
 function checkLoginValidity(modal) {
     let modalText = document.getElementById("modalText");
     if (isTokenExpired(300, true, modalText)) {
-        if (modalText.length) {
+        if (modalText.innerHTML.length) {
             modal.classList.remove("hidden");
         }
 

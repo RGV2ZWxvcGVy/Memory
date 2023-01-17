@@ -33,10 +33,10 @@ document.addEventListener("DOMContentLoaded", function() {
 function setScoreboard(highscores) {
     let averagePlaytime = document.getElementById("averagePlaytime");
     let scores = highscores.map(s => s.score);
-    averagePlaytime.innerHTML = (scores.reduce((a, b) => a + b, 0) / scores.length) + " seconden";
+    averagePlaytime.innerHTML = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length)) + " seconden";
 
     let topFive = document.getElementById("topFive");
-    highscores.slice(0, 5).forEach(highscore => topFive.innerHTML += `<li>${highscore.username}: <b>${highscore.score}</b></li>`);
+    highscores.slice(0, 5).forEach(highscore => topFive.innerHTML += `<li>${highscore.username}: <b>${Math.round(highscore.score)}</b></li>`);
 }
 
 function startNewGame() {
@@ -84,6 +84,8 @@ function gameOver(maxTimeElapsed) {
         document.getElementById("playingField").style.pointerEvents = "none";
     }
     else {
+        saveGame();
+
         alert("Gefeliciteerd! Je hebt het spel uitgespeeld!");
         updateColors();
 

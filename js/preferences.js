@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
     fetchEmail();
-    initModal();
 
     addEventListener('submit', (event) => {
         event.preventDefault();
@@ -28,12 +27,9 @@ function savePreferences() {
     // Check if the user is logged in
     loginOrAccount();
 
-    // let character = document.getElementById('character').value;
-    let picture = document.getElementById('picture').value;
-    // let size = document.getElementById('size').value;
-    let cardColor = document.getElementById('cardColor').value;
-    // let openCardColor = document.getElementById('openCardColor').value;
-    let foundCardColor = document.getElementById('foundCardColor').value;
+    const api = document.getElementById('picture').value;
+    const colorClosed = document.getElementById('cardColor').value;
+    const colorFound = document.getElementById('foundCardColor').value;
 
     const token = getJWTData();
     if (token) {
@@ -43,7 +39,7 @@ function savePreferences() {
                 'Authorization': token.auth,
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: `{"id":"${token.id}","api":"${picture}","color_found":"${foundCardColor}","color_closed":"${cardColor}"}`
+            body: `{"id":"${token.id}","api":"${api}","color_closed":"${colorClosed}","color_found":"${colorFound}"}`
         })
         .then(response => {
             if (response.status === 204 && response.ok) {
