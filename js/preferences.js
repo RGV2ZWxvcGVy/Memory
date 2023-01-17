@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     fetchEmail();
+    initModal();
 
     addEventListener('submit', (event) => {
         event.preventDefault();

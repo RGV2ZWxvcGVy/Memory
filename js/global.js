@@ -72,11 +72,35 @@ function getJWTData() {
     return token;
 }
 
-function isTokenExpired() {
+function isTokenExpired(validityRange, infoLog, modalText) {
     const token = getJWTData()?.auth.split(' ')[1];
     if (token) {
         const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
-        return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+        const now = (Math.floor((new Date).getTime() / 1000));
+        const minutesLeft = Math.round((expiry - now) / 60);
+
+        if (infoLog) {
+            if (minutesLeft <= 0) {
+                console.info(`Your login session is expired.`);
+            }
+            else {
+                console.info(`Your login session will expire in: ${minutesLeft} minutes.`);
+            }
+        }
+
+        if (modalText) {
+            if (minutesLeft <= 0) {
+                modalText.innerHTML = "<span>Uw loginsessie is verlopen.</span>" +
+                    "Klik <a href=\"/login\">hier</a> om opnieuw in te loggen.";
+            }
+            else {
+                modalText.innerHTML = `<span>Uw loginsessie verloopt binnen ${minutesLeft} minuten.</span>` +
+                    `Klik <a href="/login">hier</a> om opnieuw in te loggen.`;
+            }
+        }
+
+        // Check if the token is expired or past the minimum validity range
+        return expiry - now <= validityRange;
     }
 
     return true;
@@ -99,7 +123,20 @@ function initModal() {
         modal.classList.add("hidden");
     }
 
-    if (isTokenExpired()) {
-        modal.classList.remove("hidden");
+    window.checkLogin = setInterval(function() {
+        checkLoginValidity(modal);
+    }, 60000);
+    // Immediately execute the function, but after the setInterval is defined so the clearInterval will work
+    checkLoginValidity(modal);
+}
+
+function checkLoginValidity(modal) {
+    let modalText = document.getElementById("modalText");
+    if (isTokenExpired(300, true, modalText)) {
+        if (modalText.length) {
+            modal.classList.remove("hidden");
+        }
+
+        clearInterval(window.checkLogin);
     }
 }

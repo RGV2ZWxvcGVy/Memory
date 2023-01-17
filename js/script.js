@@ -11,6 +11,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Initialize the modal in case the token is almost expired
     initModal();
 
+    if (!isTokenExpired(0, false)) {
+        let firstNavItem = document.getElementById("firstNavItem");
+        firstNavItem.href = "/logout";
+        firstNavItem.innerHTML = "Uitloggen";
+    }
+
     let cards = new Cards();
     // Generate the cards with letters or pictures based on the settings
     GameSettings.pictures ? cards.generatePictureCards() : cards.generateCards();
@@ -35,9 +41,9 @@ function setScoreboard(highscores) {
 
 function startNewGame() {
     // Reset the interval functions, global variables, static class variables, and timers
-    clearInterval(window.foo);
+    clearInterval(window.colorInterval);
     clearInterval(window.elapsedTimer);
-    window.foo = undefined;
+    window.colorInterval = undefined;
     window.elapsedTimer = undefined;
     window.allPromises = [];
 
@@ -50,8 +56,8 @@ function startNewGame() {
     GameSettings.openCardColor = document.getElementById("openCardColor").value;
     GameSettings.foundCardColor = document.getElementById("foundCardColor").value;
 
-    document.getElementById("elapsedTime").innerHTML = 0;
-    document.getElementById("remainingTime").innerHTML = GameSettings.totalPlayTime;
+    document.getElementById("elapsedTime").innerHTML = "0";
+    document.getElementById("remainingTime").innerHTML = `${GameSettings.totalPlayTime}`;
     document.getElementById("time").value = GameSettings.totalPlayTime;
     document.getElementById("time").max = GameSettings.totalPlayTime;
     document.getElementById("playingField").style.pointerEvents = "initial";
@@ -97,9 +103,9 @@ function updateTimers() {
             gameOver(true);
         }
 
-        document.getElementById("remainingTime").innerHTML = GameSettings.totalPlayTime - elapsedTime;
+        document.getElementById("remainingTime").innerHTML = `${GameSettings.totalPlayTime - elapsedTime}`;
         document.getElementById("time").value = GameSettings.totalPlayTime - elapsedTime;
-        document.getElementById("elapsedTime").innerHTML = elapsedTime++;
+        document.getElementById("elapsedTime").innerHTML = `${elapsedTime++}`;
     }, 1000);
 }
 
@@ -113,7 +119,7 @@ function shuffleLetters() {
         characters += letter;
     }
 
-    // Concat the unique letters with eachother to get the matching letters
+    // Concat the unique letters with each other to get the matching letters
     characters = characters.concat(characters);
 
     for (let i = 0; i < GameSettings.totalCards; i++) {
@@ -145,7 +151,7 @@ async function shufflePictures() {
     // We could catch on error, however the memory game is not playable with one picture missing
     await Promise.all(window.allPromises).then((value) => {
         value.forEach((blob) => pictures.push(window.URL.createObjectURL(blob)));
-        // Concat the pictures with eachother to get the matching pictures
+        // Concat the pictures with each other to get the matching pictures
         pictures = pictures.concat(pictures);
     });
 
@@ -164,7 +170,7 @@ function promiseRandomPicture() {
         request.open("GET", "https://picsum.photos/250/", true);
 
         request.onload = function() {
-            if (request.status == 200) {
+            if (request.status === 200) {
                 resolve(request.response);
             }
             else {
@@ -185,7 +191,7 @@ function updateFoundCardPairs(foundCardPairs) {
 
 // Celebration mode for when the player has won the game
 function updateColors() {
-    window.foo = setInterval(function() {
+    window.colorInterval = setInterval(function() {
         let cards = document.getElementsByClassName("card");
         for (let i = 0; i < cards.length; i++) {
             cards[i].style.transition = 'background-color 1s ease';
