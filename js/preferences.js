@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     fetchEmail();
+    getPlayerGames();
 
     addEventListener('submit', (event) => {
         event.preventDefault();

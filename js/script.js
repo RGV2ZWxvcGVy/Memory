@@ -3,10 +3,13 @@ const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF'
 let currentColorIndex = 0;
 
 document.addEventListener("DOMContentLoaded", function() {
-    getScores(setScoreboard);
+    updateScoreboard();
 
     // Check if the player is logged in, and execute 'startNewGame' as callback if logged in
     loginOrAccount(startNewGame);
+
+    // Get all of the player data needed for the current page
+    getPlayerData();
 
     // Initialize the modal in case the token is almost expired
     initModal();
@@ -30,13 +33,19 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+function updateScoreboard() {
+    getScores(setScoreboard);
+}
+
 function setScoreboard(highscores) {
     let averagePlaytime = document.getElementById("averagePlaytime");
     let scores = highscores.map(s => s.score);
     averagePlaytime.innerHTML = Math.round((scores.reduce((a, b) => a + b, 0) / scores.length)) + " seconden";
 
-    let topFive = document.getElementById("topFive");
-    highscores.slice(0, 5).forEach(highscore => topFive.innerHTML += `<li>${highscore.username}: <b>${Math.round(highscore.score)}</b></li>`);
+    let topPlayers = document.getElementById("topPlayers");
+    topPlayers.innerHTML = ""; // Empty the score before updating it
+
+    highscores.slice(0, 5).forEach(highscore => topPlayers.innerHTML += `<li>${highscore.username}: <b>${Math.round(highscore.score)}</b></li>`);
 }
 
 function startNewGame() {
@@ -84,7 +93,8 @@ function gameOver(maxTimeElapsed) {
         document.getElementById("playingField").style.pointerEvents = "none";
     }
     else {
-        saveGame();
+        // If the game is saved successfully, the scoreboard is updated as callback function
+        saveGame(updateScoreboard);
 
         alert("Gefeliciteerd! Je hebt het spel uitgespeeld!");
         updateColors();

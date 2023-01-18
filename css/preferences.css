@@ -41,8 +41,35 @@ button[type=submit] {
     margin-top: 2rem;
 }
 
-#emailForm {
-    margin-top: 2rem;
+form,
+.table{
+    margin-bottom: 2rem;
+}
+
+#playerScores {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#playerScores th {
+    text-align: left;
+    color: #FFF;
+    background-color: #04AA6D;
+    padding: 12px 0;
+}
+
+#playerScores th,
+#playerScores td {
+    border: 1px solid #DDD;
+    padding: 8px;
+}
+
+#playerScores tr:nth-child(even) {
+    background-color: #F2F2F2;
+}
+
+#playerScores tr:hover {
+    background-color: #DDD;
 }
 
 
