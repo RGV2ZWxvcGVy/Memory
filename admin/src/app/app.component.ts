@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'admin';
+  // TODO: Add a new component to fetch and show all the aggregate data...
+  // ng g c [component-name]
 }
