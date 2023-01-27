@@ -1,0 +1,28 @@
+<header>
+    <h2>Inloggen</h2>
+    <a href="/">< Terug</a>
+</header>
+
+<main>
+    <div class="login-form">
+        <div class="imgcontainer">
+            <img src="./assets/img_avatar2.png" alt="Avatar" class="avatar">
+        </div>
+        
+        <div class="container">
+            <p>Vul hier uw gegevens in om in te loggen.</p>
+        </div>
+        
+        <div class="container">
+            <label for="username"><b>Gebruikersnaam:</b></label>
+            <input (keydown.enter)="login(username.value, password.value)" type="text" name="username" id="username" placeholder="Uw gebruikersnaam"  required #username>
+        
+            <label for="password"><b>Wachtwoord:</b></label>
+            <input (keydown.enter)="login(username.value, password.value)" type="password" name="password" id="password" placeholder="Uw wachtwoord" required #password>
+
+            <button (click)="login(username.value, password.value)" id="loginButton">Inloggen</button>
+
+            <!-- <p *ngIf="errorMsg"><b>{{ errorMsg }}</b></p> -->
+        </div>
+    </div>
+</main>

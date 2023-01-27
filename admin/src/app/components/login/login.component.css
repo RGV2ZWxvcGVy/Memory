@@ -1,6 +1,6 @@
 header,
 main {
-    width: 75%;
+    width: 50%;
     font-family: Arial, Helvetica, sans-serif;
     margin: auto;
 }
@@ -17,7 +17,7 @@ a:hover {
     text-decoration: none;
 }
 
-.table {
+.login-form {
     border: 3px solid #f1f1f1;
 }
 
@@ -44,40 +44,23 @@ button:not(.btn-default) {
         opacity: 0.8;
     }
 
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+img.avatar {
+    width: 10vw;
+    border-radius: 50%;
+}
+
 .container {
     padding: 16px;
 }
 
-#playerScores {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#playerScores th {
-    text-align: left;
-    color: #FFF;
-    background-color: #04AA6D;
-    padding: 12px 0;
-}
-
-#playerScores th,
-#playerScores td {
-    border: 1px solid #DDD;
-    padding: 8px;
-}
-
-#playerScores tr:nth-child(even) {
-    background-color: #F2F2F2;
-}
-
-#playerScores tr:hover {
-    background-color: #DDD;
-}
-
 
 @media only screen and (max-width: 768px) {
-    header,
-    main {
+    header, form {
         width: 100%;
     }
 }
