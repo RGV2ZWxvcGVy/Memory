@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { DataService } from 'src/app/services/data/data.service';
 import { LoginService } from 'src/app/services/login/login.service';
 
@@ -8,24 +9,31 @@ import { LoginService } from 'src/app/services/login/login.service';
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.css']
 })
-export class DataComponent {
+export class DataComponent implements AfterViewInit {
 
-  private data: any
+  private data: Observable<any>
 
   constructor(private router: Router, private dataService: DataService) {
     if (LoginService.isTokenExpired()) {
       this.router.navigate(['login'])
     }
+
+    this.loadData()
+    this.data = this.getData()
   }
 
-  get_data(): any {
+  ngAfterViewInit(): void {
+    // this.loadData()
+  }
+
+  getData(): Observable<any> {
     return this.data
   }
 
-  load_data(): void {
-    this.dataService.get_data().subscribe((data: any) => {
+  loadData(): void {
+    this.dataService.getData().subscribe((data: any) => {
       this.data = data
-      console.log(data)
+      console.log(this.data)
     })
   }
 

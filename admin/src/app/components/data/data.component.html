@@ -9,9 +9,11 @@
         <p>Welkom op de administratiepagina van de memory game!</p>
     </div>
 
-    <div class="table" id="playedGames">
+    <div *ngIf="getData()" class="table" id="playedGames">
         <div class="container">
             <h3>Speloverzicht</h3>
+            <div><b>Totaal aantal spellen gespeeld:</b> 14</div>
+            <div><b>Totaal aantal spelers:</b> 7</div>
             <table id="playerScores">
                 <tr>
                     <th>Spel</th>

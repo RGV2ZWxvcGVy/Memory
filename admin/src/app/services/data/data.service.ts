@@ -12,8 +12,7 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  get_data(): Observable<any> {
-    console.log(JWT);
+  getData(): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${JWT}`,
       'Content-Type': 'application/json'
