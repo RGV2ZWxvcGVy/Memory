@@ -21,7 +21,8 @@ a:hover {
     border: 3px solid #f1f1f1;
 }
 
-input[type=text], input[type=password] {
+input[type=text],
+input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0 16px 0;
@@ -40,9 +41,9 @@ button:not(.btn-default) {
     width: 100%;
 }
 
-    button:hover {
-        opacity: 0.8;
-    }
+button:hover {
+    opacity: 0.8;
+}
 
 .imgcontainer {
     text-align: center;
@@ -58,9 +59,16 @@ img.avatar {
     padding: 16px;
 }
 
+.error-message {
+    font-weight: bold;
+    color: red;
+}
+
 
 @media only screen and (max-width: 768px) {
-    header, form {
+
+    header,
+    form {
         width: 100%;
     }
 }

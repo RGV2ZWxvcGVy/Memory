@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data/data.service';
 import { LoginService } from 'src/app/services/login/login.service';
 
 @Component({
@@ -9,21 +10,33 @@ import { LoginService } from 'src/app/services/login/login.service';
 })
 export class LoginComponent {
 
-  constructor(private router:Router, private loginService:LoginService) {}
+  public errorMsg: string = ""
 
-  login(username:string, password:string):void {
-    console.log(username)
-    console.log(password)
+  constructor(private router: Router, private loginService: LoginService) { }
 
-    this.loginService.login(username, password).subscribe(data => {
-      let token = data['token']
-      const parts = token.split('.')
-      const decoded = LoginService.urlBase64Decode(parts[1])
-      let json = JSON.parse(decoded)
-      console.log(json['roles'])
+  login(username: string, password: string): void {
+    if (DataService.isNullOrWhitespace(username) ||
+      DataService.isNullOrWhitespace(password)) {
+      this.errorMsg = "Username or password cannot be blank."
+      return
+    }
 
-      localStorage.setItem('token', token)
-      this.router.navigate([''])
+    this.loginService.login(username, password).subscribe({
+      next: (data) => {
+        let token = data['token']
+        const parts = token.split('.')
+        const decoded = LoginService.urlBase64Decode(parts[1])
+        let json = JSON.parse(decoded)
+
+        let roles = json['roles']
+        if (roles.includes('ROLE_ADMIN')) {
+          localStorage.setItem('JWT', token)
+          this.router.navigate([''])
+        }
+
+        this.errorMsg = "Only admin accounts are allowed to log in."
+      },
+      error: () => this.errorMsg = "Wrong credentials, try again."
     })
   }
 

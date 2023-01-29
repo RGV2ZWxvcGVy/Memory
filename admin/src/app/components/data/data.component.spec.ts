@@ -8,9 +8,9 @@ describe('DataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DataComponent ]
+      declarations: [DataComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(DataComponent);
     component = fixture.componentInstance;
