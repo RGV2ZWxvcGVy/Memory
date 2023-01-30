@@ -31,12 +31,17 @@ export class LoginComponent {
         let roles = json['roles']
         if (roles.includes('ROLE_ADMIN')) {
           localStorage.setItem('JWT', token)
-          this.router.navigate(['']) // TODO: Redirect after the localStorage is set, move this line to the 'complete' callback function...
         }
-
-        this.errorMsg = "Only admin accounts are allowed to log in."
+        else {
+          this.errorMsg = "Only admin accounts are allowed to log in."
+        }
       },
-      error: () => this.errorMsg = "Wrong credentials, try again."
+      error: () => this.errorMsg = "Wrong credentials, try again.",
+      complete: () => {
+        if (!LoginService.isTokenExpired()) {
+          this.router.navigate([''])
+        }
+      }
     })
   }
 

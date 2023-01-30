@@ -49,7 +49,7 @@ export class LoginService {
     return true
   }
 
-  public static getJWTData() {
+  public static getJWTData(): any {
     const token = localStorage.getItem('JWT')
     if (token?.length) {
       const auth = `Bearer ${token}`
