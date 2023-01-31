@@ -26,7 +26,6 @@ export class DataComponent {
 
   loadData(): void {
     this.dataService.getData().subscribe((data: any) => {
-      console.log(data)
       this.data = data
     })
   }

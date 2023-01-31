@@ -1,5 +1,5 @@
 <header>
-    <h2>Administratiepagina</h2>
+    <h1>Administratiepagina</h1>
     <a href="http://localhost:8080/">
         < Terug</a>
 </header>
@@ -11,31 +11,31 @@
 
     <div *ngIf="getData()" class="table" id="playedGames">
         <div class="container">
-            <h3>Speloverzicht</h3>
-            <div><b>Totaal aantal spellen gespeeld:</b> 14</div>
-            <div><b>Totaal aantal spelers:</b> 7</div>
+            <h2>Speloverzicht</h2>
+
+            <div class="global-game-details">
+                <p>Totaal aantal spellen gespeeld: <span>{{ getData()[0].aantal_spellen }}</span></p>
+                <p>Totaal aantal spelers: <span>{{ getData()[1].aantal_spelers }}</span></p>
+            </div>
+
+            <h3>Gespeelde API's</h3>
             <table id="playerScores">
-                <tr>
-                    <th>Spel</th>
-                    <th>Datum</th>
-                    <th>Score</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>donderdag 12 januari 2023</td>
-                    <td>123</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>dinsdag 17 januari 2023</td>
-                    <td>5</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>woensdag 18 januari 2023</td>
-                    <td>26</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>API</th>
+                        <th>Aantal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let a of getData()[2]; index as i">
+                        <td>{{ (i + 1) }}</td>
+                        <td>{{ a.api === '' ? 'letters' : a.api }}</td>
+                        <td>{{ a.aantal }}</td>
+                    </tr>
+                </tbody>
             </table>
+
         </div>
     </div>
 </main>

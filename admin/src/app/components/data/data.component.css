@@ -10,7 +10,11 @@ header {
 }
 
 h2 {
-    margin-top: 0;
+    margin-top: 12px;
+}
+
+h3 {
+    margin-top: 36px;
 }
 
 a:hover {
@@ -47,6 +51,10 @@ button:hover {
 
 .container {
     padding: 16px;
+}
+
+.global-game-details span {
+    font-weight: bold;
 }
 
 #playerScores {
