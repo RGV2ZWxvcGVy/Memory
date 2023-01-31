@@ -8,34 +8,6 @@
     <div class="container">
         <p>Welkom op de administratiepagina van de memory game!</p>
     </div>
-
-    <div *ngIf="getData()" class="table" id="playedGames">
-        <div class="container">
-            <h2>Speloverzicht</h2>
-
-            <div class="global-game-details">
-                <p>Totaal aantal spellen gespeeld: <span>{{ getData()[0].aantal_spellen }}</span></p>
-                <p>Totaal aantal spelers: <span>{{ getData()[1].aantal_spelers }}</span></p>
-            </div>
-
-            <h3>Gespeelde API's</h3>
-            <table id="playerScores">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>API</th>
-                        <th>Aantal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let a of getData()[2]; index as i">
-                        <td>{{ (i + 1) }}</td>
-                        <td>{{ a.api === '' ? 'letters' : a.api }}</td>
-                        <td>{{ a.aantal }}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
-    </div>
+    
+    <app-aggregate></app-aggregate>
 </main>

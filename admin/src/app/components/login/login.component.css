@@ -1,48 +1,10 @@
 header,
 main {
     width: 50%;
-    font-family: Arial, Helvetica, sans-serif;
-    margin: auto;
 }
 
-header {
-    padding: 10px 0 25px 0;
-}
-
-h2 {
+h1 {
     margin-top: 0;
-}
-
-a:hover {
-    text-decoration: none;
-}
-
-.login-form {
-    border: 3px solid #f1f1f1;
-}
-
-input[type=text],
-input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0 16px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-button:not(.btn-default) {
-    background-color: #04AA6D;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-}
-
-button:hover {
-    opacity: 0.8;
 }
 
 .imgcontainer {
@@ -55,10 +17,6 @@ img.avatar {
     border-radius: 50%;
 }
 
-.container {
-    padding: 16px;
-}
-
 .error-message {
     font-weight: bold;
     color: red;
@@ -68,7 +26,7 @@ img.avatar {
 @media only screen and (max-width: 768px) {
 
     header,
-    form {
+    main {
         width: 100%;
     }
 }
