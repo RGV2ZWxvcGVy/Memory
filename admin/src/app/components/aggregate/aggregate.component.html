@@ -1,14 +1,14 @@
 <div *ngIf="getData()" class="form">
     <div class="container">
-        <h2>Speloverzicht</h2>
 
+        <h2>Speloverzicht</h2>
         <div class="global-game-details">
             <p>Totaal aantal spellen gespeeld: <span>{{ getData()[0].aantal_spellen }}</span></p>
             <p>Totaal aantal spelers: <span>{{ getData()[1].aantal_spelers }}</span></p>
         </div>
 
         <h3>Gespeelde API's</h3>
-        <table class="table" id="playerScores">
+        <table class="table">
             <thead>
                 <tr>
                     <th>#</th>

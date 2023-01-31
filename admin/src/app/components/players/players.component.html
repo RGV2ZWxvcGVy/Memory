@@ -1,0 +1,23 @@
+<div *ngIf="getData()" class="form">
+    <div class="container">
+
+        <h2>Spelers</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Gebruikersnaam</th>
+                    <th>E-mailadres</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of getData(); index as i" (click)="showPlayer(playerId.innerText)" class="clickable">
+                    <td #playerId>{{ (i + 1) }}</td>
+                    <td>{{ p.username }}</td>
+                    <td>{{ p.email }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

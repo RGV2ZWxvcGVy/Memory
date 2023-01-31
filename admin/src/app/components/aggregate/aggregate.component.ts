@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DataService } from 'src/app/services/data/data.service';
+import { AggregateService } from 'src/app/services/aggregate/aggregate.service';
 
 @Component({
   selector: 'app-aggregate',
@@ -10,7 +10,7 @@ export class AggregateComponent {
 
   private data: any
 
-  constructor(private dataService: DataService) {
+  constructor(private aggregateService: AggregateService) {
     this.loadData()
   }
 
@@ -19,7 +19,7 @@ export class AggregateComponent {
   }
 
   loadData(): void {
-    this.dataService.getData().subscribe((data: any) => {
+    this.aggregateService.getAggregateData().subscribe((data: any) => {
       this.data = data
     })
   }
