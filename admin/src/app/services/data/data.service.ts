@@ -10,9 +10,10 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  public getData(dataUrl:string): Observable<any> {
+  public getData(dataUrl: string): Observable<any> {
     const JWT = LoginService.getJWTData()?.auth
-    if (DataService.isNullOrWhitespace(JWT)) {
+    if (DataService.isNullOrWhitespace(JWT) ||
+      LoginService.isTokenExpired()) {
       return EMPTY
     }
 

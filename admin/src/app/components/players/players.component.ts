@@ -27,9 +27,8 @@ export class PlayersComponent {
 
   showPlayer(id: string): void {
     const playerId = parseInt(id)
-    if (typeof playerId === 'number') {
-      // TODO: Create a new page with the player details on it...
-      this.router.navigate(['login'], { queryParams: { id: playerId } })
+    if (typeof playerId === 'number' && !Number.isNaN(playerId)) {
+      this.router.navigate(['player'], { queryParams: { id: playerId } })
     }
   }
 

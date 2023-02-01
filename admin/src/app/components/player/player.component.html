@@ -1,0 +1,47 @@
+<header>
+    <h1>Speler details</h1>
+    <a href="/">
+        < Terug</a>
+</header>
+
+<main>
+    <div *ngIf="getPlayerData()" class="form">
+        <div *ngIf="getPlayerData().length > 0" class="container">
+
+            <h2>Details van {{ playerName }}</h2>
+            <div class="global-game-details">
+                <p>Aantal spellen gespeeld: <span>{{ playerGameCount }}</span></p>
+            </div>
+
+            <h3>Gespeelde spellen</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Datum</th>
+                        <th>Score</th>
+                        <th>API</th>
+                        <th>Gesloten kaartkleur</th>
+                        <th>Gevonden kaartkleur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pd of getPlayerData(); index as i">
+                        <td>{{ (i + 1) }}</td>
+                        <td>{{ formatDate(pd.date.date) }}</td>
+                        <td>{{ pd.score }}</td>
+                        <td>{{ pd.api === '' ? 'geen' : pd.api }}</td>
+                        <td>{{ pd.color_closed === '' ? 'geen' : pd.color_closed }}</td>
+                        <td>{{ pd.color_found === '' ? 'geen' : pd.color_found }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div *ngIf="getPlayerData().length < 1" class="container">
+            <h2>Details van {{ playerName }}</h2>
+            <p>{{ playerName }} heeft nog geen spellen gespeeld.</p>
+        </div>
+    </div>
+</main>

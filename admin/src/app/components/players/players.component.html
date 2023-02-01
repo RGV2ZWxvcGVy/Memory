@@ -2,6 +2,7 @@
     <div class="container">
 
         <h2>Spelers</h2>
+        <p>Klik op een speler voor meer informatie.</p>
         <table class="table">
             <thead>
                 <tr>
@@ -13,7 +14,7 @@
             <tbody>
                 <tr *ngFor="let p of getData(); index as i" (click)="showPlayer(playerId.innerText)" class="clickable">
                     <td #playerId>{{ (i + 1) }}</td>
-                    <td>{{ p.username }}</td>
+                    <td><a href="javascript:;">{{ p.username }}</a></td>
                     <td>{{ p.email }}</td>
                 </tr>
             </tbody>

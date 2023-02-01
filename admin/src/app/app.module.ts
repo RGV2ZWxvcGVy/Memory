@@ -8,6 +8,7 @@ import { DataComponent } from './components/data/data.component';
 import { LoginComponent } from './components/login/login.component';
 import { AggregateComponent } from './components/aggregate/aggregate.component';
 import { PlayersComponent } from './components/players/players.component';
+import { PlayerComponent } from './components/player/player.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { PlayersComponent } from './components/players/players.component';
     DataComponent,
     LoginComponent,
     AggregateComponent,
-    PlayersComponent
+    PlayersComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule,
