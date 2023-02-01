@@ -5,8 +5,8 @@
 </header>
 
 <main>
-    <div *ngIf="getPlayerData()" class="form">
-        <div *ngIf="getPlayerData().length > 0" class="container">
+    <div class="form">
+        <div *ngIf="getPlayerData()?.length > 0" class="container">
 
             <h2>Details van {{ playerName }}</h2>
             <div class="global-game-details">
@@ -39,9 +39,9 @@
 
         </div>
 
-        <div *ngIf="getPlayerData().length < 1" class="container">
-            <h2>Details van {{ playerName }}</h2>
-            <p>{{ playerName }} heeft nog geen spellen gespeeld.</p>
+        <div *ngIf="getPlayerData()?.length < 1" class="container">
+            <h2>Details van {{ playerName || 'Unknown player' }}</h2>
+            <p>{{ playerName || 'Unknown player' }} heeft nog geen spellen gespeeld.</p>
         </div>
     </div>
 </main>

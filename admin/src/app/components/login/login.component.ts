@@ -24,7 +24,7 @@ export class LoginComponent {
     }
 
     this.loginService.login(username, password).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         let token = data['token']
         const parts = token.split('.')
         const decoded = LoginService.urlBase64Decode(parts[1])

@@ -12,6 +12,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Because we only get the username, and email from the API, and no user id is present, we use the index as id here -->
                 <tr *ngFor="let p of getData(); index as i" (click)="showPlayer(playerId.innerText)" class="clickable">
                     <td #playerId>{{ (i + 1) }}</td>
                     <td><a href="javascript:;">{{ p.username }}</a></td>

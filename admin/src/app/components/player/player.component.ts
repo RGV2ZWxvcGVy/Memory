@@ -34,10 +34,17 @@ export class PlayerComponent {
   }
 
   loadPlayerData(): void {
-    this.playerService.getPlayerData(this.playerId).subscribe((data: any) => {
-      this.playerName = data.name
-      this.playerData = data.games
-      this.playerGameCount = data.games.length
+    this.playerService.getPlayerData(this.playerId).subscribe({
+      next: (data: any) => {
+        this.playerName = data.name
+        this.playerData = data.games
+        this.playerGameCount = data.games.length
+      },
+      error: () => {
+        // If the first player id starts with 1, and increments with 1, this error should never happen.
+        // However if any of the players were deleted from the database, then it's possible.
+        console.error("404 (Not Found): Deze speler is niet gevonden.")
+      }
     })
   }
 

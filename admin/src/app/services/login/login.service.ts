@@ -43,7 +43,7 @@ export class LoginService {
   }
 
   public static isLoginExpired(): boolean {
-    return !DataService.isNullOrWhitespace(localStorage.getItem('JWT'))
+    return LoginService.isTokenExpired() && !DataService.isNullOrWhitespace(localStorage.getItem('JWT'))
   }
 
   public static isTokenExpired(): boolean {
