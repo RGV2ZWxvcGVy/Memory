@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DataService } from '../data/data.service';
 
 const DATA_URL = 'http://localhost:8000/api/login_check'
 
@@ -35,6 +36,14 @@ export class LoginService {
     }
 
     return decodeURIComponent((<any>window).escape(window.atob(output)))
+  }
+
+  public static isLoggedIn(): boolean {
+    return !LoginService.isTokenExpired()
+  }
+
+  public static isLoginExpired(): boolean {
+    return !DataService.isNullOrWhitespace(localStorage.getItem('JWT'))
   }
 
   public static isTokenExpired(): boolean {

@@ -1,17 +1,19 @@
 <header>
     <h1>Inloggen</h1>
-    <a href="/">
+    <a *ngIf="isLoggedIn" href="/">
         < Terug</a>
+            <p *ngIf="loginExpired" class="error-message">Uw login is verlopen.</p>
 </header>
 
 <main>
     <div class="form">
-        
+
         <div class="imgcontainer">
             <img src="./assets/img_avatar2.png" alt="Avatar" class="avatar">
         </div>
 
         <div class="container">
+            <p>Om toegang te kunnen krijgen tot de administratiepagina, dient u in te loggen met een admin account.</p>
             <p>Vul hier uw gegevens in om in te loggen.</p>
         </div>
 

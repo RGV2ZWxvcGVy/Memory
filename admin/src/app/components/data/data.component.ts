@@ -10,7 +10,7 @@ import { LoginService } from 'src/app/services/login/login.service';
 export class DataComponent {
 
   constructor(private router: Router) {
-    if (LoginService.isTokenExpired()) {
+    if (!LoginService.isLoggedIn()) {
       this.router.navigate(['login'])
     }
   }

@@ -10,6 +10,8 @@ import { LoginService } from 'src/app/services/login/login.service';
 })
 export class LoginComponent {
 
+  public isLoggedIn: boolean = LoginService.isLoggedIn()
+  public loginExpired: boolean = LoginService.isLoginExpired()
   public errorMsg: string = ""
 
   constructor(private router: Router, private loginService: LoginService) { }
@@ -38,7 +40,7 @@ export class LoginComponent {
       },
       error: () => this.errorMsg = "Wrong credentials, try again.",
       complete: () => {
-        if (!LoginService.isTokenExpired()) {
+        if (LoginService.isLoggedIn()) {
           this.router.navigate([''])
         }
       }

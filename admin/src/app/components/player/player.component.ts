@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from 'src/app/services/login/login.service';
 import { PlayerService } from 'src/app/services/player/player.service';
 
 @Component({
@@ -15,7 +16,11 @@ export class PlayerComponent {
   playerName: string = ''
   playerGameCount: number = 0
 
-  constructor(private route: ActivatedRoute, private playerService: PlayerService) {
+  constructor(private route: ActivatedRoute, private router: Router, private playerService: PlayerService) {
+    if (!LoginService.isLoggedIn()) {
+      this.router.navigate(['login'])
+    }
+
     const id = this.route.snapshot.queryParamMap.get('id') || ''
     this.playerId = parseInt(id)
 

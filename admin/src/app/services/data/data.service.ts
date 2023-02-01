@@ -13,7 +13,7 @@ export class DataService {
   public getData(dataUrl: string): Observable<any> {
     const JWT = LoginService.getJWTData()?.auth
     if (DataService.isNullOrWhitespace(JWT) ||
-      LoginService.isTokenExpired()) {
+      !LoginService.isLoggedIn()) {
       return EMPTY
     }
 
